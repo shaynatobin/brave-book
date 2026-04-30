@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Brave Book">
+<meta name="theme-color" content="#B06EFF">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>My Brave Rainbow Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6EB4;
+    --purple: #B06EFF;
+    --blue: #6EB4FF;
+    --green: #6EFFB4;
+    --yellow: #FFE06E;
+    --orange: #FFB06E;
+    --soft-bg: #FFF9F0;
+    --text-dark: #3D2C4E;
+    --text-mid: #6B5B82;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--soft-bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  h1,h2,h3,h4 { font-family: 'Baloo 2', cursive; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: white;
+    border-bottom: 3px solid transparent;
+    border-image: linear-gradient(90deg,#FF6EB4,#B06EFF,#6EB4FF,#6EFFB4,#FFE06E) 1;
+    display: flex; gap: 4px;
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+
+  nav button {
+    font-family: 'Baloo 2', cursive;
+    font-size: 12px; font-weight: 600;
+    border: none; border-radius: 20px;
+    padding: 6px 12px; cursor: pointer;
+    transition: all 0.2s;
+    background: #f0eaf8; color: var(--text-mid);
+  }
+
+  nav button.active { color: white; box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
+  .nav-0.active { background: linear-gradient(135deg,#FFE06E,#FF6EB4); }
+  .nav-1.active { background: linear-gradient(135deg,#B06EFF,#FF6EB4); }
+  .nav-2.active { background: linear-gradient(135deg,#6EB4FF,#B06EFF); }
+  .nav-3.active { background: linear-gradient(135deg,#6EFFB4,#6EB4FF); }
+  .nav-4.active { background: linear-gradient(135deg,#FFE06E,#FF6EB4); }
+  .nav-5.active { background: linear-gradient(135deg,#FFB06E,#FFE06E); }
+
+  .page { display:none; padding: 0 0 60px; animation: fadeIn 0.35s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  /* SETUP SCREEN */
+  .setup-screen {
+    min-height: 90vh; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+    padding: 40px 24px;
+    background: linear-gradient(160deg,#fff0f8,#f3eeff,#eef6ff,#f0fff8);
+  }
+
+  .cover-emoji-row { font-size:48px; margin-bottom:18px; display:flex; gap:10px; animation:bounce 2s ease-in-out infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  .cover h1 {
+    font-size: clamp(32px,8vw,58px); line-height:1.1;
+    background: linear-gradient(135deg,#FF6EB4,#B06EFF,#6EB4FF);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    margin-bottom: 10px;
+  }
+
+  .cover .subtitle { font-size:18px; color:var(--text-mid); margin-bottom:6px; font-weight:600; }
+  .cover .tagline  { font-size:14px; color:#9e8fb0; margin-bottom:28px; font-style:italic; }
+
+  .name-box {
+    background:white; border-radius:20px; padding:18px 28px;
+    box-shadow:0 4px 20px rgba(176,110,255,0.15);
+    margin-bottom:28px; width:100%; max-width:340px;
+  }
+  .name-box label { display:block; font-size:12px; font-weight:700; color:var(--purple); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+  .name-box input {
+    width:100%; border:none; border-bottom:2px dashed var(--pink);
+    background:transparent; font-family:'Baloo 2',cursive; font-size:20px;
+    color:var(--text-dark); outline:none; text-align:center; padding-bottom:4px;
+  }
+
+  .start-btn {
+    font-family:'Baloo 2',cursive; font-size:17px; font-weight:700;
+    border:none; border-radius:30px; padding:13px 32px; cursor:pointer;
+    background:linear-gradient(135deg,#FF6EB4,#B06EFF); color:white;
+    box-shadow:0 6px 20px rgba(176,110,255,0.35); transition:all 0.2s;
+  }
+  .start-btn:active { transform:scale(0.97); }
+
+  /* TODAY PAGE */
+  .today-hero {
+    padding: 28px 20px 20px;
+    background: linear-gradient(160deg,#fff0f8,#f3eeff);
+    text-align:center;
+  }
+  .today-greeting {
+    font-family:'Baloo 2',cursive;
+    font-size: clamp(22px,5vw,32px);
+    font-weight:800; color:var(--text-dark);
+    margin-bottom: 4px;
+  }
+  .today-date { font-size:14px; color:var(--text-mid); margin-bottom:16px; }
+
+  .streak-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:white; border-radius:20px; padding:6px 16px;
+    font-family:'Baloo 2',cursive; font-size:14px; font-weight:700;
+    color:var(--purple); box-shadow:0 2px 10px rgba(176,110,255,0.2);
+  }
+
+  /* CARDS */
+  .content-area { max-width:720px; margin:0 auto; padding:0 16px; }
+
+  .card {
+    background:white; border-radius:22px; padding:22px 24px;
+    margin-bottom:20px; box-shadow:0 4px 16px rgba(0,0,0,0.07);
+    position:relative; overflow:hidden;
+  }
+  .card::before { content:''; position:absolute; top:0;left:0;right:0; height:5px; }
+  .card-pink::before   { background:linear-gradient(90deg,#FF6EB4,#FFB06E); }
+  .card-purple::before { background:linear-gradient(90deg,#B06EFF,#FF6EB4); }
+  .card-blue::before   { background:linear-gradient(90deg,#6EB4FF,#B06EFF); }
+  .card-green::before  { background:linear-gradient(90deg,#6EFFB4,#6EB4FF); }
+  .card-yellow::before { background:linear-gradient(90deg,#FFE06E,#FF6EB4); }
+  .card-orange::before { background:linear-gradient(90deg,#FFB06E,#FFE06E); }
+  .card-teal::before   { background:linear-gradient(90deg,#6EFFB4,#6EB4FF); }
+
+  .card h3 { font-size:19px; margin-bottom:10px; color:var(--text-dark); }
+  .card p, .card li { font-size:15px; color:#5a4e6e; line-height:1.75; }
+  .card ul { padding-left:18px; }
+  .card li { margin-bottom:5px; }
+
+  /* TODAY METER MINI */
+  .mini-meter { display:flex; gap:8px; margin:14px 0; flex-wrap:wrap; }
+  .mini-meter-btn {
+    flex:1; min-width:48px;
+    border:2.5px solid #ede8f8; border-radius:14px;
+    background:white; cursor:pointer; padding:10px 4px;
+    text-align:center; transition:all 0.2s; font-size:22px;
+  }
+  .mini-meter-btn:active { transform:scale(0.93); }
+  .mini-meter-btn.selected { border-color:var(--purple); background:#f3eeff; transform:scale(1.06); box-shadow:0 3px 10px rgba(176,110,255,0.25); }
+  .mini-meter-btn .mm-label { font-family:'Baloo 2',cursive; font-size:10px; font-weight:700; color:var(--text-mid); display:block; margin-top:4px; }
+
+  /* ACTIVITY CARD */
+  .activity-category {
+    font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:1.5px; color:var(--purple); margin-bottom:6px;
+  }
+  .activity-title { font-family:'Baloo 2',cursive; font-size:20px; font-weight:800; color:var(--text-dark); margin-bottom:10px; }
+  .activity-body { font-size:15px; color:#5a4e6e; line-height:1.8; }
+
+  .activity-input {
+    width:100%; border:none; border-bottom:2px dashed var(--pink);
+    background:transparent; font-family:'Baloo 2',cursive; font-size:17px;
+    color:var(--text-dark); outline:none; padding:6px 2px; margin-top:10px;
+  }
+  .activity-input::placeholder { color:#d0c0e0; }
+
+  .activity-action-btn {
+    font-family:'Baloo 2',cursive; font-size:15px; font-weight:700;
+    border:none; border-radius:24px; padding:11px 22px; cursor:pointer;
+    background:linear-gradient(135deg,#B06EFF,#6EB4FF); color:white;
+    box-shadow:0 4px 14px rgba(176,110,255,0.3); margin-top:14px;
+    display:inline-block; transition:all 0.2s;
+  }
+  .activity-action-btn:active { transform:scale(0.97); }
+
+  /* TALK ABOUT IT */
+  .talk-card {
+    background:linear-gradient(135deg,#fff0f8,#f3eeff);
+    border:2px dashed rgba(176,110,255,0.4);
+    border-radius:22px; padding:22px 24px; margin-bottom:20px;
+  }
+  .talk-card .talk-label {
+    font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:1.5px; color:var(--pink); margin-bottom:8px;
+  }
+  .talk-card .talk-text {
+    font-family:'Baloo 2',cursive; font-size:18px;
+    color:var(--text-dark); line-height:1.6; margin-bottom:14px;
+  }
+  .talk-done-btn {
+    font-family:'Baloo 2',cursive; font-size:15px; font-weight:700;
+    border:none; border-radius:24px; padding:11px 22px; cursor:pointer;
+    background:linear-gradient(135deg,#FF6EB4,#B06EFF); color:white;
+    box-shadow:0 4px 14px rgba(255,110,180,0.3); transition:all 0.2s;
+    display:inline-block;
+  }
+  .talk-done-btn.done { background:linear-gradient(135deg,#6EFFB4,#6EB4FF); }
+
+  /* FILL-IN */
+  .fill-in {
+    border:none; border-bottom:2px dashed var(--pink);
+    background:transparent; font-family:'Baloo 2',cursive;
+    font-size:17px; color:var(--text-dark); outline:none;
+    width:100%; padding:4px 2px; margin:8px 0;
+  }
+  .fill-in::placeholder { color:#d0c0e0; }
+
+  .fill-in-label {
+    font-size:13px; font-weight:700; color:var(--purple);
+    display:block; margin-top:14px; margin-bottom:2px;
+  }
+
+  /* METER LEVELS */
+  .meter-container { display:flex; flex-direction:column; gap:10px; margin:14px 0; }
+  .meter-level {
+    display:flex; align-items:center; gap:12px;
+    background:#faf8ff; border-radius:14px; padding:12px 16px;
+    border:2px solid transparent; cursor:pointer; transition:all 0.2s;
+  }
+  .meter-level:active { transform:translateX(3px); }
+  .meter-level.selected { border-color:var(--purple); background:#f3eeff; }
+  .meter-emoji { font-size:28px; flex-shrink:0; }
+  .meter-info { flex:1; }
+  .meter-name { font-family:'Baloo 2',cursive; font-size:16px; font-weight:700; margin-bottom:2px; }
+  .meter-desc { font-size:12px; color:var(--text-mid); }
+  .meter-bar { width:50px; height:9px; border-radius:5px; flex-shrink:0; }
+
+  /* TOOLKIT GRID */
+  .toolkit-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+  @media(max-width:400px){ .toolkit-grid{grid-template-columns:1fr;} }
+
+  .tool-card {
+    background:#faf8ff; border-radius:16px; padding:16px;
+    text-align:center; border:2px solid #ede8f8; transition:all 0.2s;
+  }
+  .tool-card:active { transform:translateY(-2px); box-shadow:0 6px 18px rgba(176,110,255,0.15); }
+  .tool-card .tool-emoji { font-size:32px; margin-bottom:6px; }
+  .tool-card .tool-name { font-family:'Baloo 2',cursive; font-size:15px; font-weight:700; color:var(--text-dark); margin-bottom:3px; }
+  .tool-card .tool-desc { font-size:12px; color:var(--text-mid); line-height:1.5; }
+
+  /* MOVEMENT TOOL SPECIAL */
+  .movement-card {
+    background:linear-gradient(135deg,#f0fff8,#fff0f8);
+    border:2px solid rgba(110,255,180,0.4);
+    border-radius:20px; padding:20px; margin:14px 0;
+  }
+  .movement-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+  .move-item {
+    background:white; border-radius:14px; padding:14px;
+    text-align:center; border:2px solid #ede8f8; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .move-item:active { transform:scale(0.96); background:#f0fff8; border-color:var(--green); }
+  .move-item .move-emoji { font-size:28px; margin-bottom:4px; }
+  .move-item .move-name { font-family:'Baloo 2',cursive; font-size:14px; font-weight:700; color:var(--text-dark); margin-bottom:2px; }
+  .move-item .move-desc { font-size:11px; color:var(--text-mid); line-height:1.4; }
+
+  /* CHALLENGES */
+  .challenge-list { display:flex; flex-direction:column; gap:12px; margin:14px 0; }
+  .challenge-item {
+    display:flex; align-items:flex-start; gap:12px;
+    background:white; border:2px solid #ede8f8; border-radius:16px;
+    padding:14px 16px; transition:all 0.2s;
+  }
+  .challenge-item.done { background:linear-gradient(135deg,#f0fff8,#f8fff0); border-color:var(--green); }
+  .challenge-check {
+    width:26px; height:26px; border-radius:50%;
+    border:2.5px solid #d0c0e0; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px; flex-shrink:0; transition:all 0.2s; margin-top:2px; background:white;
+  }
+  .challenge-check.checked { background:var(--green); border-color:var(--green); }
+  .challenge-info { flex:1; }
+  .challenge-level { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--purple); margin-bottom:2px; }
+  .challenge-text { font-family:'Baloo 2',cursive; font-size:15px; font-weight:600; color:var(--text-dark); margin-bottom:2px; }
+  .challenge-hint { font-size:12px; color:var(--text-mid); }
+  .star-reward { font-size:20px; opacity:0; transition:opacity 0.3s; }
+  .challenge-item.done .star-reward { opacity:1; }
+
+  /* RITUAL STEPS */
+  .ritual-steps { display:flex; flex-direction:column; gap:12px; margin:14px 0; }
+  .ritual-step { display:flex; gap:14px; align-items:flex-start; }
+  .step-num {
+    width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(135deg,#FF6EB4,#B06EFF); color:white;
+    font-family:'Baloo 2',cursive; font-size:17px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .step-content { flex:1; padding-top:3px; }
+  .step-content strong { font-family:'Baloo 2',cursive; font-size:16px; display:block; margin-bottom:3px; }
+  .step-content p { font-size:13px; color:var(--text-mid); }
+  .step-content .fill-in { font-size:14px; }
+
+  /* TAGS */
+  .tag { display:inline-block; padding:3px 11px; border-radius:20px; font-size:12px; font-weight:700; margin-right:5px; margin-bottom:5px; }
+  .tag-pink   { background:#ffeef7; color:var(--pink); }
+  .tag-purple { background:#f3eeff; color:var(--purple); }
+  .tag-blue   { background:#eef6ff; color:#4a90d9; }
+
+  /* HIGHLIGHT */
+  .highlight-box {
+    background:linear-gradient(135deg,#fff8f0,#fff0f8);
+    border-radius:16px; padding:16px 20px; margin:12px 0;
+    border:2px solid rgba(255,110,180,0.2);
+  }
+  .highlight-box h4 { font-size:15px; margin-bottom:6px; color:var(--pink); }
+  .highlight-box p { font-size:14px; color:var(--text-mid); line-height:1.7; }
+
+  /* CHARACTER BUILDER */
+  .character-builder {
+    text-align:center; padding:18px;
+    background:linear-gradient(135deg,#f8f0ff,#fff0f8);
+    border-radius:22px; margin:14px 0;
+  }
+  .dino-display { font-size:72px; margin:12px 0; animation:wiggle 3s ease-in-out infinite; display:block; }
+  @keyframes wiggle { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
+  .trait-pills { display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin:10px 0; }
+  .trait-pill {
+    padding:5px 14px; border-radius:18px; border:2px solid #ede8f8;
+    background:white; cursor:pointer; font-size:13px; font-weight:600;
+    color:var(--text-mid); transition:all 0.2s;
+  }
+  .trait-pill.selected { background:linear-gradient(135deg,#B06EFF,#FF6EB4); color:white; border-color:transparent; }
+
+  /* SECTION HEROES */
+  .section-hero { padding:40px 20px 26px; text-align:center; }
+  .section-hero h2 { font-size:clamp(26px,6vw,44px); margin-bottom:8px; }
+  .section-hero p { font-size:15px; color:var(--text-mid); max-width:500px; margin:0 auto; line-height:1.7; }
+  .s1-hero { background:linear-gradient(160deg,#fff0f8,#f8f0ff); }
+  .s2-hero { background:linear-gradient(160deg,#f0f0ff,#f0fff8); }
+  .s3-hero { background:linear-gradient(160deg,#f0fff0,#fff8f0); }
+  .s4-hero { background:linear-gradient(160deg,#fffbf0,#fff0f8); }
+  .s5-hero { background:linear-gradient(160deg,#f0f8ff,#f8f0ff); }
+
+  .rainbow-text {
+    background:linear-gradient(135deg,#FF6EB4,#B06EFF,#6EB4FF,#6EFFB4,#FFE06E);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+
+  /* BREATHING */
+  .breathe-btn {
+    font-family:'Baloo 2',cursive; font-size:15px; font-weight:700;
+    border:none; border-radius:28px; padding:11px 24px; cursor:pointer;
+    background:linear-gradient(135deg,#6EB4FF,#B06EFF); color:white;
+    box-shadow:0 4px 14px rgba(110,180,255,0.3); margin:10px auto; display:block; transition:all 0.2s;
+  }
+  .breathe-display { text-align:center; padding:18px; display:none; }
+  .breathe-circle {
+    width:110px; height:110px; border-radius:50%;
+    background:linear-gradient(135deg,#6EB4FF,#B06EFF);
+    margin:0 auto 14px; display:flex; align-items:center; justify-content:center;
+    color:white; font-family:'Baloo 2',cursive; font-size:15px; font-weight:700; transition:all 0.1s;
+  }
+  .breathe-text { font-family:'Baloo 2',cursive; font-size:22px; color:var(--purple); margin-bottom:3px; }
+  .breathe-sub { font-size:13px; color:var(--text-mid); }
+
+  /* TWO-COL */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  @media(max-width:440px){ .two-col{grid-template-columns:1fr;} }
+
+  /* CALENDAR */
+  .save-toast {
+    position:fixed; bottom:24px; right:20px;
+    background:linear-gradient(135deg,#B06EFF,#FF6EB4); color:white;
+    font-family:'Baloo 2',cursive; font-size:14px; font-weight:700;
+    padding:9px 20px; border-radius:28px;
+    box-shadow:0 4px 14px rgba(176,110,255,0.4);
+    opacity:0; transform:translateY(10px);
+    transition:opacity 0.3s,transform 0.3s; pointer-events:none; z-index:9999;
+  }
+  .save-toast.show { opacity:1; transform:translateY(0); }
+
+  .page-footer { text-align:center; padding:36px 20px 18px; color:#b0a0c0; font-size:13px; }
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <button class="nav-0 active" onclick="showPage(0)">🌟 Today</button>
+  <button class="nav-1" onclick="showPage(1)">🦄 My Unicorn</button>
+  <button class="nav-2" onclick="showPage(2)">🌡️ Belly Meter</button>
+  <button class="nav-3" onclick="showPage(3)">🎒 Toolkit</button>
+  <button class="nav-4" onclick="showPage(4)">🗺️ Preview Plan</button>
+  <button class="nav-5" onclick="showPage(5)">⭐ Challenges</button>
+</nav>
+
+<div class="save-toast" id="saveToast">✨ Saved!</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SETUP SCREEN (shown only on first visit)
+═══════════════════════════════════════════════════ -->
+<div id="setupScreen" style="display:none">
+  <div class="setup-screen cover">
+    <div class="cover-emoji-row">🦄🌈✨🎸🌟</div>
+    <h1>My Brave<br>Rainbow Book</h1>
+    <p class="subtitle">A book about big feelings & being brave</p>
+    <p class="tagline">"She's been going through a lot, but she keeps on going." 🌟</p>
+    <div class="name-box">
+      <label>This book belongs to:</label>
+      <input type="text" id="setupName" placeholder="Write your name here ✨">
+    </div>
+    <button class="start-btn" onclick="finishSetup()">Let's Start! 🦄 →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 0 — TODAY
+═══════════════════════════════════════════════════ -->
+<div class="page active" id="page-0">
+
+  <div class="today-hero">
+    <div class="today-greeting" id="todayGreeting">Good morning, brave girl! 🌈</div>
+    <div class="today-date" id="todayDateLabel"></div>
+    <div class="streak-badge" id="streakBadge">🔥 Loading...</div>
+  </div>
+
+  <div class="content-area" style="margin-top:20px">
+
+    <!-- QUICK CHECK-IN -->
+    <div class="card card-pink">
+      <h3>🌡️ Quick Belly Check</h3>
+      <p style="margin-bottom:2px">How is your belly feeling right now?</p>
+      <div class="mini-meter" id="miniMeter">
+        <button class="mini-meter-btn" onclick="quickMeter(this,5)" title="Volcano">😵<span class="mm-label">Volcano</span></button>
+        <button class="mini-meter-btn" onclick="quickMeter(this,4)" title="Stormy">😰<span class="mm-label">Stormy</span></button>
+        <button class="mini-meter-btn" onclick="quickMeter(this,3)" title="Cloudy">😬<span class="mm-label">Cloudy</span></button>
+        <button class="mini-meter-btn" onclick="quickMeter(this,2)" title="Breezy">🙂<span class="mm-label">Breezy</span></button>
+        <button class="mini-meter-btn" onclick="quickMeter(this,1)" title="Sunny">😄<span class="mm-label">Sunny</span></button>
+      </div>
+    </div>
+
+    <!-- TODAY'S ACTIVITY -->
+    <div class="card card-purple" id="activityCard">
+      <div class="activity-category" id="activityCategory"></div>
+      <div class="activity-title"   id="activityTitle"></div>
+      <div class="activity-body"    id="activityBody"></div>
+      <div id="activityInputArea"></div>
+    </div>
+
+    <!-- TALK ABOUT IT -->
+    <div class="talk-card">
+      <div class="talk-label">💬 Talk About It — Go Find Mom or Dad!</div>
+      <div class="talk-text" id="talkText"></div>
+      <button class="talk-done-btn" id="talkDoneBtn" onclick="markTalkDone()">We did it! ✓</button>
+    </div>
+
+    <!-- MINI CALENDAR STRIP -->
+    <div class="card card-yellow">
+      <h3>📅 My Check-In Calendar</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px">
+        <button onclick="calPrev()" style="background:none;border:2px solid #ede8f8;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;color:var(--purple)">‹</button>
+        <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;color:var(--text-dark)" id="calMonthLabel"></div>
+        <button onclick="calNext()" style="background:none;border:2px solid #ede8f8;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;color:var(--purple)">›</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px">
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">Su</div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">Mo</div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">Tu</div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">We</div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">Th</div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">Fr</div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--text-mid)">Sa</div>
+      </div>
+      <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px"></div>
+      <!-- Past entry viewer -->
+      <div id="pastEntryViewer" style="display:none;margin-top:14px;background:#f3eeff;border-radius:14px;padding:16px;position:relative">
+        <button onclick="closePastEntry()" style="position:absolute;top:10px;right:12px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--purple)">✕</button>
+        <div style="font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;color:var(--purple);margin-bottom:10px" id="pastEntryDate"></div>
+        <div style="font-size:13px;color:var(--text-mid)">Belly level: <strong id="pMeterLevel" style="color:var(--text-dark)">—</strong></div>
+        <div style="font-size:13px;color:var(--text-mid);margin-top:4px">Activity answer: <em id="pActivityAnswer" style="color:var(--text-dark)">—</em></div>
+        <div style="font-size:13px;color:var(--text-mid);margin-top:4px">Brave thing: <em id="pBraveNote" style="color:var(--text-dark)">—</em></div>
+      </div>
+    </div>
+
+    <!-- END OF DAY NOTE -->
+    <div class="card card-green">
+      <h3>🌙 One brave thing today</h3>
+      <p>Before you close the book, write one brave thing you did today — big or tiny!</p>
+      <input type="text" id="braveNote" class="fill-in" placeholder="Today I was brave when I...">
+      <button onclick="saveBraveNote()" style="font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;border:none;border-radius:20px;padding:8px 20px;background:linear-gradient(135deg,#6EFFB4,#6EB4FF);color:var(--text-dark);cursor:pointer;margin-top:12px;box-shadow:0 3px 10px rgba(110,255,180,0.3)">Save ✓</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 1 — MY WORRY UNICORN
+═══════════════════════════════════════════════════ -->
+<div class="page" id="page-1">
+  <div class="section-hero s1-hero">
+    <div style="font-size:52px;margin-bottom:8px">🦄</div>
+    <h2 class="rainbow-text">Meet Your Worry Unicorn</h2>
+    <p>Sometimes our body makes a worried feeling. Let's give that feeling a name — and make it a magical unicorn friend!</p>
+  </div>
+  <div class="content-area">
+
+    <div class="card card-pink">
+      <h3>🧠 First, let's understand feelings</h3>
+      <p>Everyone has a part of their brain called the <strong>Worry Brain</strong>. Its job is to keep us safe. But sometimes it works TOO hard — like an alarm that goes off when there's no fire!</p>
+      <p style="margin-top:10px">When your Worry Brain is too loud, you might feel:</p>
+      <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px">
+        <span class="tag tag-pink">😣 tummy hurts</span>
+        <span class="tag tag-purple">😶 can't find words</span>
+        <span class="tag tag-blue">🥶 frozen feeling</span>
+        <span class="tag tag-pink">❓ lots of questions</span>
+        <span class="tag tag-purple">😮‍💨 hard to breathe</span>
+      </div>
+      <p style="margin-top:12px">That's NOT you being bad. That's just your Worry Brain being a little too loud. <strong>We can help turn down the volume!</strong></p>
+    </div>
+
+    <div class="card card-purple">
+      <h3>🦄 Build Your Worry Unicorn</h3>
+      <p>Your Worry Unicorn lives in your tummy. It's not mean — it's just scared sometimes. Let's get to know it!</p>
+      <div class="character-builder">
+        <span class="dino-display" id="dinoEmoji">🦄</span>
+        <p style="font-size:13px;color:var(--text-mid);margin-bottom:10px">Pick your unicorn's color:</p>
+        <div class="trait-pills">
+          <span class="trait-pill" onclick="pickDino('🦄')">🦄 Classic</span>
+          <span class="trait-pill" onclick="pickDino('🌸')">🌸 Pink</span>
+          <span class="trait-pill" onclick="pickDino('💜')">💜 Purple</span>
+          <span class="trait-pill" onclick="pickDino('🌈')">🌈 Rainbow</span>
+          <span class="trait-pill" onclick="pickDino('✨')">✨ Sparkle</span>
+          <span class="trait-pill" onclick="pickDino('🌟')">🌟 Golden</span>
+        </div>
+      </div>
+      <span class="fill-in-label">My Worry Unicorn's name is:</span>
+      <input type="text" class="fill-in" placeholder="e.g. Dazzle, Poppy, Luna...">
+      <span class="fill-in-label">My Worry Unicorn shows up when...</span>
+      <input type="text" class="fill-in" placeholder="e.g. we go somewhere new...">
+      <span class="fill-in-label">When my Worry Unicorn comes, I feel it in my...</span>
+      <input type="text" class="fill-in" placeholder="e.g. my belly, my chest...">
+      <span class="fill-in-label">One thing that makes my Worry Unicorn feel better is...</span>
+      <input type="text" class="fill-in" placeholder="e.g. my stuffed animal, a hug...">
+    </div>
+
+    <div class="card card-blue">
+      <h3>💬 What to say to your Worry Unicorn</h3>
+      <p>When your Worry Unicorn shows up, you can talk to it! Try saying:</p>
+      <div class="highlight-box" style="margin-top:12px">
+        <p style="font-family:'Baloo 2',cursive;font-size:16px;color:var(--text-dark)">"Hi Worry Unicorn. I see you. I know you're trying to help. But I've got this. Let's be brave together." 🦄✨</p>
+      </div>
+      <div class="highlight-box" style="margin-top:10px;background:linear-gradient(135deg,#f3eeff,#eef6ff)">
+        <h4 style="color:var(--purple)">🦋 The Magic Question</h4>
+        <p>After you do something scary and it turns out okay, ask yourself:<br><br>
+        <span style="font-family:'Baloo 2',cursive;font-size:16px;color:var(--text-dark)">"Did my Worry Unicorn tell the truth... or did it <em>lie</em>?" 🤔</span><br><br>
+        You already know one answer — the butterfly exhibit in Boston! Keep collecting "Did It Lie?" moments in Brave Challenges!</p>
+      </div>
+      <p style="margin-top:12px">You can draw your Worry Unicorn here or on a piece of paper! 🎨</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 2 — BELLY METER
+═══════════════════════════════════════════════════ -->
+<div class="page" id="page-2">
+  <div class="section-hero s2-hero">
+    <div style="font-size:52px;margin-bottom:8px">🌡️</div>
+    <h2 class="rainbow-text">My Belly Meter</h2>
+    <p>Instead of trying to find the right words, just check your <strong>Belly Meter</strong> — because your body always knows first.</p>
+  </div>
+  <div class="content-area">
+
+    <div class="card card-green">
+      <h3>🌡️ Check your Belly Meter</h3>
+      <p>Tap the level that matches how your belly feels right now:</p>
+      <div class="meter-container" style="margin-top:14px">
+        <div class="meter-level" onclick="selectMeter(this)">
+          <div class="meter-emoji">😵</div>
+          <div class="meter-info">
+            <div class="meter-name" style="color:#FF6E6E">Level 5 — VOLCANO</div>
+            <div class="meter-desc">Belly is erupting. Might feel sick. Very hard to think.</div>
+          </div>
+          <div class="meter-bar" style="background:linear-gradient(90deg,#FF6E6E,#FF3030)"></div>
+        </div>
+        <div class="meter-level" onclick="selectMeter(this)">
+          <div class="meter-emoji">😰</div>
+          <div class="meter-info">
+            <div class="meter-name" style="color:#FFB06E">Level 4 — STORMY</div>
+            <div class="meter-desc">Belly is churning. Lots of worries. Hard to be brave.</div>
+          </div>
+          <div class="meter-bar" style="background:linear-gradient(90deg,#FFB06E,#FF8C00)"></div>
+        </div>
+        <div class="meter-level" onclick="selectMeter(this)">
+          <div class="meter-emoji">😬</div>
+          <div class="meter-info">
+            <div class="meter-name" style="color:#FFE06E">Level 3 — CLOUDY</div>
+            <div class="meter-desc">Belly has some butterflies. A bit nervous. Can still try.</div>
+          </div>
+          <div class="meter-bar" style="background:linear-gradient(90deg,#FFE06E,#FFC200)"></div>
+        </div>
+        <div class="meter-level" onclick="selectMeter(this)">
+          <div class="meter-emoji">🙂</div>
+          <div class="meter-info">
+            <div class="meter-name" style="color:#6EFFB4">Level 2 — BREEZY</div>
+            <div class="meter-desc">Belly feels mostly okay. A tiny flutter maybe. Feeling brave!</div>
+          </div>
+          <div class="meter-bar" style="background:linear-gradient(90deg,#6EFFB4,#00CC88)"></div>
+        </div>
+        <div class="meter-level" onclick="selectMeter(this)">
+          <div class="meter-emoji">😄</div>
+          <div class="meter-info">
+            <div class="meter-name" style="color:#6EB4FF">Level 1 — SUNNY</div>
+            <div class="meter-desc">Belly is calm and happy. All good! Feeling great!</div>
+          </div>
+          <div class="meter-bar" style="background:linear-gradient(90deg,#6EB4FF,#3388FF)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-yellow">
+      <h3>🌬️ Rainbow Breathing</h3>
+      <p>When your meter is at 3 or higher, try Rainbow Breathing! It sends a message to your Worry Unicorn that you are safe.</p>
+      <button class="breathe-btn" onclick="startBreathing()">Start Rainbow Breathing 🌈</button>
+      <div class="breathe-display" id="breatheDisplay">
+        <div class="breathe-circle" id="breatheCircle">breathe in</div>
+        <div class="breathe-text" id="breatheText">🌈 Breathe In</div>
+        <div class="breathe-sub"  id="breatheSub">Follow the circle...</div>
+        <button class="breathe-btn" onclick="stopBreathing()" style="background:linear-gradient(135deg,#FF6EB4,#FFB06E);margin-top:10px">All Done ✓</button>
+      </div>
+      <div class="highlight-box" style="margin-top:14px">
+        <h4>How to do Rainbow Breathing:</h4>
+        <p>🔴 Breathe IN for 4 counts (imagine drawing red)<br>
+        🟡 HOLD for 2 counts (imagine drawing yellow)<br>
+        🔵 Breathe OUT for 4 counts (imagine drawing blue)<br><br>
+        Do this 3 times. Imagine a rainbow growing with each breath!</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 3 — BRAVE TOOLKIT
+═══════════════════════════════════════════════════ -->
+<div class="page" id="page-3">
+  <div class="section-hero s3-hero">
+    <div style="font-size:52px;margin-bottom:8px">🎒</div>
+    <h2 class="rainbow-text">My Brave Toolkit</h2>
+    <p>Every brave girl needs her tools! These are YOUR special moves for when your Worry Unicorn gets loud.</p>
+  </div>
+  <div class="content-area">
+
+    <div class="card card-green">
+      <h3>🛠️ Your Power Tools</h3>
+      <div class="toolkit-grid">
+        <div class="tool-card">
+          <div class="tool-emoji">🧸</div>
+          <div class="tool-name">Comfort Anchor</div>
+          <div class="tool-desc">Hold something special — your stuffed animal, a smooth rock, a bracelet. Your hands need something to hold when your belly gets scared.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🌈</div>
+          <div class="tool-name">Rainbow Breathing</div>
+          <div class="tool-desc">In for 4, hold for 2, out for 4. Imagine painting a rainbow. This sends a calm message to your body.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🔍</div>
+          <div class="tool-name">5-4-3-2-1 Finder</div>
+          <div class="tool-desc">5 things you SEE · 4 you TOUCH · 3 you HEAR · 2 you SMELL · 1 you TASTE. This wakes up your calm brain!</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🎵</div>
+          <div class="tool-name">Taylor Swift Song</div>
+          <div class="tool-desc">Pick one song that makes you feel powerful. Hum it in your head or listen with headphones. Music is like armor!</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🌟</div>
+          <div class="tool-name">My Special Job</div>
+          <div class="tool-desc">When you have a JOB to do, your brain focuses on helping instead of worrying. Ask Mom or Dad: "What's my job today?"</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🤫</div>
+          <div class="tool-name">Secret Signal</div>
+          <div class="tool-desc">Make a secret signal with Mom or Dad that means "my Worry Unicorn is here." No words needed — just a squeeze of the hand.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🦄</div>
+          <div class="tool-name">Unicorn Talk</div>
+          <div class="tool-desc">Whisper to your Worry Unicorn: "I see you. We've got this." Talking TO your worry makes it feel smaller.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">🏆</div>
+          <div class="tool-name">Remember a Win</div>
+          <div class="tool-desc">Think of one time you were scared and did it anyway — like the butterflies in Boston! You are braver than you think!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY MOVEMENT TOOL -->
+    <div class="card card-teal">
+      <h3>🏃 Move It Out!</h3>
+      <p>Sometimes your body needs to shake the worry out! When your belly meter is high, try one of these moves. Your body and your brain are connected — move your body and your brain starts to calm down too.</p>
+      <div class="movement-grid">
+        <div class="move-item" onclick="this.style.background='#f0fff8';this.style.borderColor='var(--green)'">
+          <div class="move-emoji">🦄</div>
+          <div class="move-name">Unicorn Gallop</div>
+          <div class="move-desc">Gallop around the room like a unicorn for 30 seconds! High knees, arms up!</div>
+        </div>
+        <div class="move-item" onclick="this.style.background='#f0fff8';this.style.borderColor='var(--green)'">
+          <div class="move-emoji">🫨</div>
+          <div class="move-name">Shake It Out</div>
+          <div class="move-desc">Shake your hands, then arms, then whole body. Shake the worry right off!</div>
+        </div>
+        <div class="move-item" onclick="this.style.background='#f0fff8';this.style.borderColor='var(--green)'">
+          <div class="move-emoji">🦶</div>
+          <div class="move-name">Stomp Breathing</div>
+          <div class="move-desc">Stomp your feet slowly. Breathe IN on one stomp, OUT on the next. Do 10 stomps.</div>
+        </div>
+        <div class="move-item" onclick="this.style.background='#f0fff8';this.style.borderColor='var(--green)'">
+          <div class="move-emoji">⭐</div>
+          <div class="move-name">Star Jumps</div>
+          <div class="move-desc">Do 10 jumping jacks! Count out loud. Counting keeps your brain busy while your body moves.</div>
+        </div>
+        <div class="move-item" onclick="this.style.background='#f0fff8';this.style.borderColor='var(--green)'">
+          <div class="move-emoji">🤗</div>
+          <div class="move-name">Bear Hug</div>
+          <div class="move-desc">Squeeze yourself in a big hug. Squeeze tight, hold for 5 counts, then let go slowly.</div>
+        </div>
+        <div class="move-item" onclick="this.style.background='#f0fff8';this.style.borderColor='var(--green)'">
+          <div class="move-emoji">🐘</div>
+          <div class="move-name">Heavy Feet Walk</div>
+          <div class="move-desc">Walk super slowly and heavy — like an elephant. Feel the ground under you. You are safe!</div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:14px">
+        <h4>💡 Why moving helps</h4>
+        <p>When you're worried, your body gets ready to run or hide. Moving helps your body use up that energy and tells your brain: "We're okay. It's safe now." Tap any move to try it!</p>
+      </div>
+    </div>
+
+    <div class="card card-blue">
+      <h3>⭐ My Top 3 Brave Tools</h3>
+      <span class="fill-in-label">🥇 My #1 tool (when things get really hard):</span>
+      <input type="text" class="fill-in" placeholder="e.g. Hold my stuffed animal">
+      <span class="fill-in-label">🥈 My #2 tool:</span>
+      <input type="text" class="fill-in" placeholder="e.g. Unicorn Gallop!">
+      <span class="fill-in-label">🥉 My #3 tool:</span>
+      <input type="text" class="fill-in" placeholder="e.g. My Taylor Swift song">
+    </div>
+
+    <div class="card card-yellow">
+      <h3>🎵 My Power Song</h3>
+      <span class="fill-in-label">My power song is:</span>
+      <input type="text" class="fill-in" placeholder="e.g. Shake It Off, You Belong With Me...">
+      <span class="fill-in-label">When I hear it, I feel:</span>
+      <input type="text" class="fill-in" placeholder="e.g. strong, happy, like I can do anything!">
+    </div>
+
+    <div class="card card-purple">
+      <h3>🤫 Our Secret Signal</h3>
+      <p>When words are too hard, a secret signal lets Mom or Dad know your Worry Unicorn is here — without you having to say anything.</p>
+      <span class="fill-in-label">Our secret signal is:</span>
+      <input type="text" class="fill-in" placeholder="e.g. squeeze hand twice, tug on shirt...">
+      <span class="fill-in-label">When I give the signal, Mom/Dad will:</span>
+      <input type="text" class="fill-in" placeholder="e.g. stay close and not ask questions...">
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 4 — PREVIEW PLAN
+═══════════════════════════════════════════════════ -->
+<div class="page" id="page-4">
+  <div class="section-hero s4-hero">
+    <div style="font-size:52px;margin-bottom:8px">🗺️</div>
+    <h2 class="rainbow-text">What's Coming Next</h2>
+    <p>Your Worry Unicorn hates surprises. So we make a <strong>preview plan</strong> before anything new — like a movie trailer for your day!</p>
+  </div>
+  <div class="content-area">
+
+    <div class="card card-yellow">
+      <h3>🎬 The Preview Plan</h3>
+      <p>Fill this out TOGETHER before something new. You are the reporter!</p>
+      <div class="ritual-steps" style="margin-top:18px">
+        <div class="ritual-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>🎯 What is happening?</strong>
+            <input type="text" class="fill-in" placeholder="e.g. We're going to a new restaurant">
+          </div>
+        </div>
+        <div class="ritual-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>🕐 How long will it take?</strong>
+            <input type="text" class="fill-in" placeholder="e.g. About 1 hour">
+          </div>
+        </div>
+        <div class="ritual-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>👨‍👩‍👧 Who will be there?</strong>
+            <input type="text" class="fill-in" placeholder="e.g. Just our family + Grandma">
+          </div>
+        </div>
+        <div class="ritual-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>🍕 First, next, and last?</strong>
+            <p>First: <input type="text" class="fill-in" placeholder="e.g. We drive there"></p>
+            <p style="margin-top:6px">Next: <input type="text" class="fill-in" placeholder="e.g. We sit down and order"></p>
+            <p style="margin-top:6px">Last: <input type="text" class="fill-in" placeholder="e.g. We drive home and get in my PJs"></p>
+          </div>
+        </div>
+        <div class="ritual-step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <strong>🎒 What am I bringing?</strong>
+            <input type="text" class="fill-in" placeholder="e.g. My stuffed animal + headphones">
+          </div>
+        </div>
+        <div class="ritual-step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <strong>🌟 My special job is:</strong>
+            <input type="text" class="fill-in" placeholder="e.g. Pick the music in the car">
+          </div>
+        </div>
+        <div class="ritual-step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <strong>😬 If my Worry Unicorn shows up, I will:</strong>
+            <input type="text" class="fill-in" placeholder="e.g. Give Mom our secret signal">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-pink">
+      <h3>✅ Brave Girl Checklist</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px"><input type="checkbox" style="width:17px;height:17px"> I know what we're doing and how long it takes</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px"><input type="checkbox" style="width:17px;height:17px"> I have my comfort item with me</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px"><input type="checkbox" style="width:17px;height:17px"> I know my special job</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px"><input type="checkbox" style="width:17px;height:17px"> I remember our secret signal</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px"><input type="checkbox" style="width:17px;height:17px"> I listened to my power song (optional!)</label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px"><input type="checkbox" style="width:17px;height:17px"> I know it's okay to feel nervous AND still be brave</label>
+      </div>
+    </div>
+
+    <div class="card card-blue">
+      <h3>💭 The Worry Questions Game</h3>
+      <div class="highlight-box" style="margin-top:10px">
+        <h4>Three questions to ask:</h4>
+        <p>1. "What's the WORST that could happen?"<br><em>(Say it out loud — it makes it smaller!)</em><br><br>
+        2. "What would we DO if that happened?"<br><em>(You always have a plan!)</em><br><br>
+        3. "What do I think will ACTUALLY happen?"<br><em>(Usually... pretty good things!)</em></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE 5 — BRAVE CHALLENGES
+═══════════════════════════════════════════════════ -->
+<div class="page" id="page-5">
+  <div class="section-hero s5-hero">
+    <div style="font-size:52px;margin-bottom:8px">⭐</div>
+    <h2 class="rainbow-text">Brave Challenges</h2>
+    <p>Being brave doesn't mean not being scared. It means trying even when your Worry Unicorn shows up!</p>
+  </div>
+  <div class="content-area">
+
+    <div class="card card-purple">
+      <h3>🦋 The "Did It Lie?" Wall</h3>
+      <p>Your Worry Unicorn sometimes says something will be scary. But sometimes... <strong>it's wrong!</strong></p>
+      <div class="highlight-box" style="margin-top:14px;background:linear-gradient(135deg,#f3eeff,#fff0f8);border-color:rgba(176,110,255,0.3)">
+        <h4 style="color:var(--purple)">🌟 Your First "Did It Lie?" Moment</h4>
+        <p style="font-family:'Baloo 2',cursive;font-size:15px;color:var(--text-dark);line-height:1.8">
+          The <strong>Butterfly Exhibit in Boston</strong> 🦋<br>
+          <span style="font-size:13px;color:var(--text-mid)">Your Worry Unicorn said it would be scary. You went in anyway. And it was AMAZING. The Worry Unicorn lied!</span>
+        </p>
+      </div>
+      <p style="margin-top:14px;margin-bottom:12px">Every time your Worry Unicorn is wrong, write it here:</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:#faf8ff;border-radius:12px;padding:13px;border:2px solid #ede8f8">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">🦋 Did It Lie? #1</div>
+          <span class="fill-in-label" style="margin-top:0">My Worry Unicorn said:</span>
+          <input type="text" class="fill-in" value="the butterfly exhibit would be scary...">
+          <span class="fill-in-label">But actually it was:</span>
+          <input type="text" class="fill-in" value="SO amazing and beautiful! 🦋" style="color:var(--purple)">
+        </div>
+        <div style="background:#faf8ff;border-radius:12px;padding:13px;border:2px solid #ede8f8">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">🌟 Did It Lie? #2</div>
+          <span class="fill-in-label" style="margin-top:0">My Worry Unicorn said:</span>
+          <input type="text" class="fill-in" placeholder="The new thing would be...">
+          <span class="fill-in-label">But actually it was:</span>
+          <input type="text" class="fill-in" placeholder="Actually it was...">
+        </div>
+        <div style="background:#faf8ff;border-radius:12px;padding:13px;border:2px solid #ede8f8">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">✨ Did It Lie? #3</div>
+          <span class="fill-in-label" style="margin-top:0">My Worry Unicorn said:</span>
+          <input type="text" class="fill-in" placeholder="The new thing would be...">
+          <span class="fill-in-label">But actually it was:</span>
+          <input type="text" class="fill-in" placeholder="Actually it was...">
+        </div>
+        <div style="background:#faf8ff;border-radius:12px;padding:13px;border:2px solid #ede8f8">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">🏆 Did It Lie? #4</div>
+          <span class="fill-in-label" style="margin-top:0">My Worry Unicorn said:</span>
+          <input type="text" class="fill-in" placeholder="The new thing would be...">
+          <span class="fill-in-label">But actually it was:</span>
+          <input type="text" class="fill-in" placeholder="Actually it was...">
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-blue">
+      <h3>🌱 Level 1 — Tiny Brave</h3>
+      <p style="margin-bottom:12px;font-size:13px;color:var(--text-mid)">Start here. These feel small — and that's the point.</p>
+      <div class="challenge-list">
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 1</div><div class="challenge-text">Tell Mom or Dad your Belly Meter number</div><div class="challenge-hint">Practice 3 days in a row ✨</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 1</div><div class="challenge-text">Do Rainbow Breathing when you're feeling calm</div><div class="challenge-hint">Practice so it's ready when you need it</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 1</div><div class="challenge-text">Order your own food at a restaurant</div><div class="challenge-hint">Even if your voice is quiet — Mom or Dad is right there!</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 1</div><div class="challenge-text">Try one bite of a new food</div><div class="challenge-hint">Just one bite — you don't have to like it!</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 1 ✈️</div><div class="challenge-text">Be the DJ — pick the playlist for a car ride or flight</div><div class="challenge-hint">You're in charge! Start with your power song.</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 1 🏃</div><div class="challenge-text">Try one Move It Out tool when your belly is at a 3</div><div class="challenge-hint">Unicorn Gallop, Shake It Out, Stomps — pick one!</div></div><div class="star-reward">⭐</div></div>
+      </div>
+    </div>
+
+    <div class="card card-yellow">
+      <h3>🌤️ Level 2 — Getting Braver</h3>
+      <p style="margin-bottom:12px;font-size:13px;color:var(--text-mid)">These might make your Worry Unicorn stir — and that's okay!</p>
+      <div class="challenge-list">
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 2</div><div class="challenge-text">Go somewhere new and stay for 10 minutes</div><div class="challenge-hint">A park, a store, a new coffee shop with Mom</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 2</div><div class="challenge-text">Use the secret signal instead of saying "I want to go home"</div><div class="challenge-hint">Trust that Mom or Dad got the message</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 2 ✈️</div><div class="challenge-text">Check Belly Meter at the START of a car ride and again when you arrive</div><div class="challenge-hint">Watch your number go down on its own!</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 2 ✈️</div><div class="challenge-text">Pick a brand new place YOU want to visit</div><div class="challenge-hint">You're the boss of where we go!</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 2 🏃</div><div class="challenge-text">Do a Move It Out tool BEFORE going somewhere new (not after)</div><div class="challenge-hint">Put on your brave armor first!</div></div><div class="star-reward">⭐</div></div>
+      </div>
+    </div>
+
+    <div class="card card-pink">
+      <h3>🌈 Level 3 — Wow, So Brave!</h3>
+      <p style="margin-bottom:12px;font-size:13px;color:var(--text-mid)">These take real courage. Only try when Level 2 feels easy!</p>
+      <div class="challenge-list">
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 3</div><div class="challenge-text">Stay somewhere new even when your belly goes to Level 4</div><div class="challenge-hint">Use a tool to bring it down. You CAN do hard things.</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 3 🦋</div><div class="challenge-text">Walk into one new place that feels scary — then ask "did it lie?"</div><div class="challenge-hint">Like the butterflies in Boston!</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 3</div><div class="challenge-text">Use your tools WITHOUT Mom or Dad reminding you</div><div class="challenge-hint">You notice your Unicorn and reach for your toolkit yourself 🌟</div></div><div class="star-reward">⭐</div></div>
+        <div class="challenge-item"><div class="challenge-check" onclick="toggleChallenge(this)"></div><div class="challenge-info"><div class="challenge-level">LEVEL 3 🏃</div><div class="challenge-text">Pick your own Move It Out tool in a hard moment — without being asked</div><div class="challenge-hint">Your body, your superpower!</div></div><div class="star-reward">⭐</div></div>
+      </div>
+    </div>
+
+    <div class="card card-green" style="text-align:center">
+      <div style="font-size:44px;margin-bottom:10px">🏆</div>
+      <h3>Brave Girl Hall of Fame</h3>
+      <p style="margin-bottom:14px">Every time you do something brave, write it here:</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">🦋</span><input type="text" class="fill-in" value="went to the butterfly exhibit in Boston even though I was nervous — and LOVED it!" style="color:var(--purple)"></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⭐</span><input type="text" class="fill-in" placeholder="I was brave when I..."></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⭐</span><input type="text" class="fill-in" placeholder="I was brave when I..."></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⭐</span><input type="text" class="fill-in" placeholder="I was brave when I..."></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⭐</span><input type="text" class="fill-in" placeholder="I was brave when I..."></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⭐</span><input type="text" class="fill-in" placeholder="I was brave when I..."></div>
+        <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">⭐</span><input type="text" class="fill-in" placeholder="I was brave when I..."></div>
+      </div>
+      <div class="highlight-box" style="margin-top:18px;text-align:left">
+        <p style="font-family:'Baloo 2',cursive;font-size:14px;color:var(--text-dark);line-height:1.8">"Being brave isn't about not being scared. The bravest thing in the world is feeling scared AND trying anyway. Your Worry Unicorn doesn't win — YOU do. Every single time." 🌈🦄✨</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="page-footer">Made with love 🌈 · Brave girls do hard things · 🦄✨🌈</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════ -->
+<script>
+// ── Storage ────────────────────────────────────────────────
+const STORE = 'braveRainbowBook_v2';
+function load() { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e) { return {}; } }
+function save(d) { try { localStorage.setItem(STORE, JSON.stringify(d)); } catch(e) {} showToast(); }
+
+let toastTimer;
+function showToast() {
+  const t = document.getElementById('saveToast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ── Activities Bank ────────────────────────────────────────
+const ACTIVITIES = [
+  // 🦄 Unicorn Check
+  { cat:'🦄 Unicorn Check', title:'What color is your Unicorn today?', body:'Close your eyes and imagine your Worry Unicorn. What color does it look like RIGHT NOW? Is it a calm color or an excited color?', input:'My Unicorn looks...', talk:'Show Mom or Dad what color you picked and why.' },
+  { cat:'🦄 Unicorn Check', title:'Give your Unicorn a name today', body:'Sometimes your Worry Unicorn needs a different name depending on the day. Does it feel like a different name today, or the same one you picked before?', input:'Today my Unicorn feels like a...', talk:'Tell Mom or Dad your Unicorn\'s name and what it means to you.' },
+  { cat:'🦄 Unicorn Check', title:'What is your Unicorn worried about?', body:'Think about your Worry Unicorn. If it could talk right now, what do you think it would say? Try to write its exact words.', input:'My Unicorn would say...', talk:'Read your Unicorn\'s words to Mom or Dad. Then ask: "Is that really true?"' },
+  { cat:'🦄 Unicorn Check', title:'Draw your Unicorn\'s face', body:'On a piece of paper, draw your Worry Unicorn\'s face. Give it the emotion it\'s feeling today. Is it scared? Curious? A little bit both?', input:'My Unicorn\'s emotion today is...', talk:'Show Mom or Dad your drawing and explain the face you drew.' },
+  { cat:'🦄 Unicorn Check', title:'Write a note TO your Unicorn', body:'Your Worry Unicorn is trying to help you — it just sometimes tries too hard! Write it a short message. Start with "Dear Worry Unicorn..."', input:'Dear Worry Unicorn,', talk:'Read your note to Mom or Dad out loud. They can write one back to your Unicorn if they want!' },
+  { cat:'🦄 Unicorn Check', title:'What does your Unicorn need today?', body:'Think about what would make your Worry Unicorn feel calmer right now. A hug? Information about what\'s happening? A brave reminder?', input:'My Unicorn needs...', talk:'Ask Mom or Dad to help give your Unicorn what it needs.' },
+
+  // 🌡️ Belly Detective
+  { cat:'🌡️ Belly Detective', title:'Find your Sunny Level memory', body:'Think of a time when your belly felt totally SUNNY — level 1. Where were you? What were you doing? What did it feel like inside?', input:'My belly felt sunny when I was...', talk:'Tell Mom or Dad about your Sunny memory. What made it so good?' },
+  { cat:'🌡️ Belly Detective', title:'Where does worry live in your body?', body:'When your Worry Unicorn shows up, where exactly do you feel it? Your belly? Your chest? Your throat? Your hands? Try to describe it.', input:'I feel worry in my... and it feels like...', talk:'Show Mom or Dad where in your body worry lives. Point to the exact spot.' },
+  { cat:'🌡️ Belly Detective', title:'Body scan check-in', body:'Start at your toes and slowly move up your body. Notice every part — are your shoulders tight? Is your jaw clenched? Your belly tight or loose? Take a slow breath wherever you notice tightness.', input:'Today I noticed tightness in my...', talk:'Tell Mom or Dad what you discovered in your body scan.' },
+  { cat:'🌡️ Belly Detective', title:'What does a Level 3 feel like?', body:'Think about a time you were at a Cloudy Level 3. What did it feel like? Was your heart beating faster? Were you quiet? Did your tummy feel like it had butterflies?', input:'A Level 3 feels like...', talk:'Describe Level 3 to Mom or Dad so they can recognize it when it happens.' },
+  { cat:'🌡️ Belly Detective', title:'Track your meter today', body:'Check your belly meter RIGHT NOW and write your number. Then check it again in 30 minutes. Does it change?', input:'My meter right now is... I think it might change to...', talk:'Show Mom or Dad both numbers. Did your belly surprise you?' },
+  { cat:'🌡️ Belly Detective', title:'What brings your number DOWN?', body:'Think about what makes your belly meter go from a 3 to a 1 or 2. What actually helps? Music? Moving? Your stuffed animal? Being outside?', input:'My belly goes down when I...', talk:'Share your list with Mom or Dad. They can help you remember these next time.' },
+
+  // 🎒 Tool Practice
+  { cat:'🎒 Tool Practice', title:'Rainbow Breathing — right now!', body:'Do the full Rainbow Breathing exercise right now, even if your belly feels fine. Check your meter BEFORE and AFTER. Write both numbers.', input:'Before: Level ___ · After: Level ___', talk:'Tell Mom or Dad both numbers. Did your belly change?' },
+  { cat:'🎒 Tool Practice', title:'5-4-3-2-1 right now!', body:'Do the full grounding exercise right now! Find 5 things you can SEE, 4 you can TOUCH, 3 you can HEAR, 2 you can SMELL, 1 you can TASTE. Write them all!', input:'I see... I touch... I hear...', talk:'Tell Mom or Dad about the most interesting thing you found in each category.' },
+  { cat:'🎒 Tool Practice', title:'Plan your special job', body:'Think about something coming up this week or soon. What could your special job be? Be specific — "carry the bag" or "read the menu" or "watch for our exit."', input:'My special job next time will be...', talk:'Ask Mom or Dad if that job works for them. Make it official!' },
+  { cat:'🎒 Tool Practice', title:'Practice your secret signal', body:'Practice your secret signal right now — even just to yourself. Do it three times. Make sure you remember it perfectly so it\'s ready when you need it.', input:'Our secret signal is... and I practiced it...', talk:'Give Mom or Dad the secret signal right now as practice. Make sure they remember too!' },
+  { cat:'🎒 Tool Practice', title:'Listen to your power song', body:'Put on your power song RIGHT NOW and listen to the whole thing. While you listen, think about why this song makes you feel brave. What words or parts do you love most?', input:'The best part of my song is...', talk:'Play your power song for Mom or Dad. Tell them why it makes you feel strong.' },
+  { cat:'🎒 Tool Practice', title:'Pick your tool for today', body:'Look at all the tools in your Brave Toolkit. Which one do you want to PRACTICE today? Not just think about — actually try it right now for real.', input:'I\'m going to practice... because...', talk:'Tell Mom or Dad which tool you picked and show them what it looks like.' },
+
+  // 🏃 Move It Out
+  { cat:'🏃 Move It Out', title:'Unicorn Gallop time!', body:'Right now — gallop around the room like a unicorn for 30 full seconds! High knees, arms out, go! When you\'re done, check your belly meter.', input:'Before galloping: Level ___ · After: Level ___', talk:'Tell Mom or Dad how your body felt different after the gallop.' },
+  { cat:'🏃 Move It Out', title:'Shake It Out experiment', body:'Stand up and shake just your hands first — really wiggle them. Then arms. Then shoulders. Then your WHOLE body at once for 20 seconds. Shake every bit of worry off!', input:'The part of my body that felt best to shake was...', talk:'Shake it out WITH Mom or Dad. Did it feel silly? Good? Both?' },
+  { cat:'🏃 Move It Out', title:'Stomp Breathing', body:'Do 10 slow, heavy stomps. Breathe IN on odd stomps (1,3,5,7,9). Breathe OUT on even stomps (2,4,6,8,10). Go slowly and feel each stomp through your whole body.', input:'After stomping my belly felt...', talk:'Teach Mom or Dad how to do Stomp Breathing. You are the teacher!' },
+  { cat:'🏃 Move It Out', title:'Invent your own move!', body:'Your body is smart — what kind of movement feels good to YOU when you\'re nervous? Jump? Spin? Squeeze something? Stomp? Invent your own "worry shake-off" move and give it a name!', input:'My move is called... and it goes like this...', talk:'Teach Mom or Dad your new move! They have to do it too.' },
+  { cat:'🏃 Move It Out', title:'Bear Hug practice', body:'Give yourself the biggest bear hug you can. Squeeze tight, hold for 5 counts, then let go slowly. Do this 3 times. Feel how your body relaxes when you let go.', input:'When I let go of the hug, I felt...', talk:'Ask Mom or Dad for a real bear hug. Tell them you\'ve been practicing.' },
+  { cat:'🏃 Move It Out', title:'Heavy Feet Walk', body:'Walk super slowly across the room, placing each foot down as heavy as you can — like an elephant. Count 20 steps. Feel the floor under you. Notice how solid and safe it is.', input:'While I did heavy feet, I noticed...', talk:'Show Mom or Dad your Heavy Feet walk. Ask them what they notice about how you look when you do it.' },
+
+  // 🦋 Did It Lie?
+  { cat:'🦋 Did It Lie?', title:'Think of something coming up', body:'Is there anything coming up soon that makes your Worry Unicorn nervous? Write it down. Then write what your Unicorn THINKS will happen — and what you think will ACTUALLY happen.', input:'My Unicorn thinks... but I think...', talk:'Share your prediction with Mom or Dad. Come back later and check if it came true!' },
+  { cat:'🦋 Did It Lie?', title:'Count your "Did It Lie?" moments', body:'Open your Brave Challenges section and look at your Did It Lie? Wall. How many entries do you have? Can you think of a new one to add from something that happened recently?', input:'A time my Unicorn lied recently was...', talk:'Tell Mom or Dad the story of a time your Unicorn was wrong. How did it feel AFTER?' },
+  { cat:'🦋 Did It Lie?', title:'The Boston Butterflies memory', body:'Think about the butterfly exhibit in Boston. You were nervous. You went in. It was AMAZING. Write the story of what happened from YOUR point of view — what did you see, feel, think?', input:'In Boston, the butterflies were...', talk:'Tell Mom or Dad the whole butterfly story. What do you think NOW about that nervous feeling you had before?' },
+  { cat:'🦋 Did It Lie?', title:'What\'s something that used to be scary?', body:'Think of something that felt really scary before — but doesn\'t feel that scary anymore. What changed? Did you practice? Did you just do it enough times? Did your Unicorn learn something new?', input:'Something that used to scare me but doesn\'t now is...', talk:'Tell Mom or Dad what changed. What made the scary thing smaller?' },
+  { cat:'🦋 Did It Lie?', title:'Write a message to future you', body:'Imagine a version of you who is about to do something new and scary. Write her a note from someone who has been there before. What do you want her to know?', input:'Dear brave me, I want you to know...', talk:'Read your note to Mom or Dad. They can read it to you next time you\'re nervous before something new.' },
+
+  // 🌈 Brave Spotter
+  { cat:'🌈 Brave Spotter', title:'Spot your brave from this week', body:'Think about the last 7 days. What\'s one brave thing you did — even something small? Saying hi to someone, trying a new food, going somewhere new, doing something hard?', input:'This week I was brave when I...', talk:'Tell Mom or Dad your brave moment from this week. Let them add it to your Hall of Fame!' },
+  { cat:'🌈 Brave Spotter', title:'What could 5-year-old you NOT do?', body:'Think about when you were 5 years old. What felt impossible then that you can do easily now? Swimming? Reading? Riding a bike? Being away from Mom for a while?', input:'When I was 5 I couldn\'t... but now I can...', talk:'Tell Mom or Dad your answer. Ask them what THEY couldn\'t do at 5 that they can do now.' },
+  { cat:'🌈 Brave Spotter', title:'Name three things you\'re good at', body:'Bravery isn\'t just about scary things. What are three things you\'re genuinely really good at? They can be anything — art, swimming, being kind, knowing facts about animals, anything!', input:'I\'m really good at 1)... 2)... 3)...', talk:'Tell Mom or Dad your three things. Ask them what THEY think you\'re good at — you might be surprised!' },
+  { cat:'🌈 Brave Spotter', title:'Find someone else\'s bravery', body:'Think about someone you know — a family member, friend, or even a character from a show or book. What\'s something brave THEY did? What can you learn from them?', input:'Someone brave I know is... because they...', talk:'Tell Mom or Dad about the brave person you picked. What would you ask them?' },
+  { cat:'🌈 Brave Spotter', title:'What brave thing is coming next?', body:'Look at your Brave Challenges list. What\'s one challenge you haven\'t done yet that you think you might be ALMOST ready for? What would it take to feel ready?', input:'I\'m almost ready to... I just need...', talk:'Tell Mom or Dad which challenge you\'re aiming for next. Make a plan together for when to try it.' },
+  { cat:'🌈 Brave Spotter', title:'Write your Brave Girl motto', body:'Every superhero has a motto — something they say to remind themselves of their power. What\'s YOUR brave motto? It can be a word, a sentence, or even just an emoji that means something to you.', input:'My brave motto is...', talk:'Tell Mom or Dad your motto. Maybe they can make it your secret password or put it somewhere you\'ll see it!' },
+];
+
+const TALK_PROMPTS = [
+  'Show Mom or Dad your belly meter number from today and ask what theirs is.',
+  'Tell Mom or Dad one time your Worry Unicorn was wrong about something.',
+  'Ask Mom or Dad: "What\'s your biggest brave moment?" Tell them yours too.',
+  'Show Mom or Dad which Move It Out tool you want to practice together tonight.',
+  'Tell Mom or Dad about today\'s activity and what you discovered.',
+  'Ask Mom or Dad to do Rainbow Breathing with you right now — 3 rounds together.',
+  'Tell Mom or Dad something you\'re looking forward to this week.',
+  'Ask Mom or Dad: "What do you do when YOU feel nervous?" Tell them your tools too.',
+  'Show Mom or Dad your Brave Girl Hall of Fame. Pick your favourite entry and tell the story.',
+  'Tell Mom or Dad one thing that makes you feel safe when you\'re worried.',
+  'Ask Mom or Dad if there\'s a new brave challenge you could try together this week.',
+  'Tell Mom or Dad about a time your belly meter went DOWN after it was high. What helped?',
+];
+
+// ── Today Page Logic ───────────────────────────────────────
+function getDayIndex() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay) + now.getFullYear() * 366;
+}
+
+function todayKey() {
+  const n = new Date();
+  return `entry_${n.getFullYear()}_${String(n.getMonth()+1).padStart(2,'0')}_${String(n.getDate()).padStart(2,'0')}`;
+}
+
+function dateKey(y,m,d) {
+  return `entry_${y}_${String(m+1).padStart(2,'0')}_${String(d).padStart(2,'0')}`;
+}
+
+function initToday() {
+  const now  = new Date();
+  const hour = now.getHours();
+  const d    = load();
+  const name = d.childName || 'brave girl';
+
+  // Greeting
+  let greet = hour < 12 ? `Good morning, ${name}! 🌈`
+            : hour < 17 ? `Good afternoon, ${name}! ☀️`
+            : `Good evening, ${name}! 🌙`;
+  document.getElementById('todayGreeting').textContent = greet;
+
+  // Date
+  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('todayDateLabel').textContent =
+    `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+
+  // Streak
+  let streak = 0;
+  const check = new Date();
+  while (true) {
+    const k = `entry_${check.getFullYear()}_${String(check.getMonth()+1).padStart(2,'0')}_${String(check.getDate()).padStart(2,'0')}`;
+    if (d[k] && (d[k].meterLevel || d[k].braveNote || d[k].activityAnswer)) {
+      streak++;
+      check.setDate(check.getDate() - 1);
+    } else break;
+  }
+  document.getElementById('streakBadge').textContent =
+    streak > 1 ? `🔥 ${streak} day streak!` : streak === 1 ? '⭐ Day 1 — you showed up!' : '🌈 Start your streak today!';
+
+  // Restore today's meter
+  const tk = todayKey();
+  if (d[tk] && d[tk].meterLevel) {
+    const btns = document.querySelectorAll('.mini-meter-btn');
+    btns.forEach(b => { if (b.getAttribute('onclick').includes(d[tk].meterLevel)) b.classList.add('selected'); });
+  }
+
+  // Restore brave note
+  if (d[tk] && d[tk].braveNote) {
+    document.getElementById('braveNote').value = d[tk].braveNote;
+  }
+
+  // Activity — consistent for the day, advances each day
+  const actIdx  = getDayIndex() % ACTIVITIES.length;
+  const talkIdx = getDayIndex() % TALK_PROMPTS.length;
+  const act     = ACTIVITIES[actIdx];
+
+  document.getElementById('activityCategory').textContent = act.cat;
+  document.getElementById('activityTitle').textContent    = act.title;
+  document.getElementById('activityBody').textContent     = act.body;
+
+  const inputArea = document.getElementById('activityInputArea');
+  inputArea.innerHTML = '';
+
+  const inp = document.createElement('input');
+  inp.type  = 'text';
+  inp.className   = 'activity-input';
+  inp.placeholder = act.input;
+  inp.id          = 'activityAnswer';
+  if (d[tk] && d[tk].activityAnswer) inp.value = d[tk].activityAnswer;
+  inp.addEventListener('input', saveActivityAnswer);
+  inputArea.appendChild(inp);
+
+  // Talk prompt — synced to day but different offset
+  const talkText = TALK_PROMPTS[talkIdx];
+  document.getElementById('talkText').textContent = talkText;
+  const talkBtn = document.getElementById('talkDoneBtn');
+  if (d[tk] && d[tk].talkDone) {
+    talkBtn.textContent = '✓ Done — great talk!';
+    talkBtn.classList.add('done');
+  }
+
+  // Restore talk done
+  renderCalendar();
+}
+
+function quickMeter(btn, level) {
+  document.querySelectorAll('.mini-meter-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const d = load();
+  const tk = todayKey();
+  if (!d[tk]) d[tk] = {};
+  d[tk].meterLevel = level;
+  save(d);
+}
+
+function saveActivityAnswer() {
+  const val = document.getElementById('activityAnswer').value;
+  const d = load();
+  const tk = todayKey();
+  if (!d[tk]) d[tk] = {};
+  d[tk].activityAnswer = val;
+  save(d);
+}
+
+function saveBraveNote() {
+  const val = document.getElementById('braveNote').value;
+  const d = load();
+  const tk = todayKey();
+  if (!d[tk]) d[tk] = {};
+  d[tk].braveNote = val;
+  save(d);
+  renderCalendar();
+}
+
+function markTalkDone() {
+  const d = load();
+  const tk = todayKey();
+  if (!d[tk]) d[tk] = {};
+  d[tk].talkDone = true;
+  save(d);
+  const btn = document.getElementById('talkDoneBtn');
+  btn.textContent = '✓ Done — great talk!';
+  btn.classList.add('done');
+}
+
+// ── Calendar ───────────────────────────────────────────────
+const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+let calYear, calMonth;
+
+function renderCalendar() {
+  const label = document.getElementById('calMonthLabel');
+  const grid  = document.getElementById('calGrid');
+  if (!label || !grid) return;
+
+  const now = new Date();
+  if (!calYear) { calYear = now.getFullYear(); calMonth = now.getMonth(); }
+
+  label.textContent = `${MONTHS_FULL[calMonth]} ${calYear}`;
+  grid.innerHTML = '';
+
+  const d = load();
+  const firstDay    = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) grid.appendChild(document.createElement('div'));
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const key      = dateKey(calYear, calMonth, day);
+    const entry    = d[key];
+    const hasEntry = !!(entry && (entry.meterLevel || entry.braveNote || entry.activityAnswer));
+    const isToday  = now.getFullYear()===calYear && now.getMonth()===calMonth && now.getDate()===day;
+    const isFuture = new Date(calYear,calMonth,day) > now;
+
+    const cell = document.createElement('div');
+    cell.textContent = day;
+    cell.style.cssText = `
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      border-radius:50%; font-family:'Baloo 2',cursive; font-size:12px; font-weight:700;
+      cursor:${hasEntry && !isToday ? 'pointer' : 'default'};
+      transition:transform 0.15s;
+      ${hasEntry ? 'background:linear-gradient(135deg,#FF6EB4,#B06EFF);color:white;box-shadow:0 2px 6px rgba(176,110,255,0.3);' : ''}
+      ${isToday && !hasEntry ? 'border:2.5px solid var(--purple);color:var(--purple);' : ''}
+      ${isToday && hasEntry ? 'border:2.5px solid white;' : ''}
+      ${isFuture ? 'opacity:0.25;' : ''}
+    `;
+
+    if (hasEntry && !isToday) {
+      cell.addEventListener('click', () => openPastEntry(calYear, calMonth, day, entry));
+      cell.addEventListener('mouseenter', () => { if (!isFuture) cell.style.transform='scale(1.18)'; });
+      cell.addEventListener('mouseleave', () => cell.style.transform='scale(1)');
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function openPastEntry(y,m,day,entry) {
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dt = new Date(y,m,day);
+  document.getElementById('pastEntryDate').textContent = `${dayNames[dt.getDay()]}, ${MONTHS_FULL[m]} ${day}`;
+  document.getElementById('pMeterLevel').textContent    = entry.meterLevel     ? `Level ${entry.meterLevel}` : '—';
+  document.getElementById('pActivityAnswer').textContent = entry.activityAnswer || '—';
+  document.getElementById('pBraveNote').textContent      = entry.braveNote      || '—';
+  document.getElementById('pastEntryViewer').style.display = 'block';
+  document.getElementById('pastEntryViewer').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function closePastEntry() { document.getElementById('pastEntryViewer').style.display='none'; }
+function calPrev() { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); }
+function calNext() {
+  const now=new Date();
+  if(calYear===now.getFullYear()&&calMonth===now.getMonth()) return;
+  calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar();
+}
+
+// ── Nav & Page ─────────────────────────────────────────────
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  document.querySelectorAll('nav button')[n].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Setup ──────────────────────────────────────────────────
+function finishSetup() {
+  const name = document.getElementById('setupName').value.trim();
+  if (!name) return;
+  const d = load();
+  d.childName = name;
+  d.setupDone = true;
+  save(d);
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('mainNav').style.display = '';
+  initToday();
+}
+
+// ── Workbook Inputs ────────────────────────────────────────
+function indexInputs() {
+  document.querySelectorAll('input.fill-in').forEach((el,i) => { el.dataset.saveKey='input_'+i; });
+}
+
+function loadInputs() {
+  const d = load();
+  document.querySelectorAll('input.fill-in').forEach(el => {
+    if (d[el.dataset.saveKey] !== undefined) el.value = d[el.dataset.saveKey];
+  });
+}
+
+function saveInput(el) { const d=load(); d[el.dataset.saveKey]=el.value; save(d); }
+
+function indexCheckboxes() {
+  document.querySelectorAll('input[type=checkbox]').forEach((el,i) => {
+    el.dataset.saveKey='checkbox_'+i;
+    el.addEventListener('change',()=>{ const d=load(); d[el.dataset.saveKey]=el.checked; save(d); });
+  });
+}
+
+function loadCheckboxes() {
+  const d=load();
+  document.querySelectorAll('input[type=checkbox]').forEach(el=>{ if(d[el.dataset.saveKey]!==undefined) el.checked=d[el.dataset.saveKey]; });
+}
+
+function indexChallenges() {
+  document.querySelectorAll('.challenge-check').forEach((el,i) => { el.dataset.saveKey='challenge_'+i; });
+}
+
+function toggleChallenge(checkEl) {
+  checkEl.classList.toggle('checked');
+  checkEl.closest('.challenge-item').classList.toggle('done');
+  checkEl.textContent = checkEl.classList.contains('checked') ? '✓' : '';
+  const d=load(); d[checkEl.dataset.saveKey]=checkEl.classList.contains('checked'); save(d);
+}
+
+function loadChallenges() {
+  const d=load();
+  document.querySelectorAll('.challenge-check').forEach(el=>{
+    if(d[el.dataset.saveKey]){ el.classList.add('checked'); el.textContent='✓'; el.closest('.challenge-item').classList.add('done'); }
+  });
+}
+
+function pickDino(emoji) {
+  document.getElementById('dinoEmoji').textContent=emoji;
+  document.querySelectorAll('.trait-pill').forEach(p=>p.classList.remove('selected'));
+  event.target.classList.add('selected');
+  const d=load(); d.dinoEmoji=emoji; d.dinoLabel=event.target.textContent; save(d);
+}
+
+function loadDino() {
+  const d=load();
+  if(d.dinoEmoji){
+    document.getElementById('dinoEmoji').textContent=d.dinoEmoji;
+    document.querySelectorAll('.trait-pill').forEach(el=>{ if(el.textContent===d.dinoLabel) el.classList.add('selected'); });
+  }
+}
+
+function selectMeter(el) {
+  document.querySelectorAll('.meter-level').forEach(m=>m.classList.remove('selected'));
+  el.classList.add('selected');
+  const idx=Array.from(document.querySelectorAll('.meter-level')).indexOf(el);
+  const d=load(); d.meterIndex=idx; save(d);
+}
+
+function loadMeter() {
+  const d=load();
+  if(d.meterIndex!==undefined){
+    const levels=document.querySelectorAll('.meter-level');
+    if(levels[d.meterIndex]) levels[d.meterIndex].classList.add('selected');
+  }
+}
+
+// ── Breathing ──────────────────────────────────────────────
+let breatheInterval=null, breathePhase=0, breatheCount=0;
+function startBreathing(){document.getElementById('breatheDisplay').style.display='block';breathePhase=0;breatheCount=0;runBreathPhase();}
+function runBreathPhase(){
+  const circle=document.getElementById('breatheCircle'),text=document.getElementById('breatheText'),sub=document.getElementById('breatheSub');
+  const phases=[
+    {label:'breathe in',text:'🌈 Breathe In...',sub:'Grow the rainbow! (4 counts)',size:'150px',color:'linear-gradient(135deg,#FF6EB4,#FFB06E)',duration:4000},
+    {label:'hold...',text:'✨ Hold...',sub:'Rainbow is glowing! (2 counts)',size:'150px',color:'linear-gradient(135deg,#FFE06E,#6EFFB4)',duration:2000},
+    {label:'breathe out',text:'💙 Breathe Out...',sub:'Let it all go... (4 counts)',size:'110px',color:'linear-gradient(135deg,#6EB4FF,#B06EFF)',duration:4000},
+  ];
+  const p=phases[breathePhase];
+  circle.textContent=p.label; circle.style.width=p.size; circle.style.height=p.size; circle.style.background=p.color;
+  text.textContent=p.text; sub.textContent=p.sub;
+  breathePhase=(breathePhase+1)%3;
+  if(breathePhase===0) breatheCount++;
+  if(breatheCount<3){ breatheInterval=setTimeout(runBreathPhase,p.duration); }
+  else { setTimeout(()=>{text.textContent='🌈 Amazing! 3 Rainbow Breaths Done!';sub.textContent='How does your belly feel now?';circle.textContent='🌟';circle.style.background='linear-gradient(135deg,#FFE06E,#6EFFB4)';},p.duration); }
+}
+function stopBreathing(){clearTimeout(breatheInterval);document.getElementById('breatheDisplay').style.display='none';breathePhase=0;breatheCount=0;}
+
+// ── PWA Service Worker ─────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+
+// ── BOOT ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  indexInputs();
+  indexCheckboxes();
+  indexChallenges();
+
+  const d = load();
+
+  if (!d.setupDone) {
+    // First time — show setup, hide nav
+    document.getElementById('setupScreen').style.display = 'block';
+    document.getElementById('mainNav').style.display = 'none';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  } else {
+    document.getElementById('setupScreen').style.display = 'none';
+    loadDino();
+    loadMeter();
+    loadInputs();
+    loadCheckboxes();
+    loadChallenges();
+    initToday();
+    calYear = new Date().getFullYear();
+    calMonth = new Date().getMonth();
+    showPage(0);
+  }
+
+  // Auto-save all fill-in inputs
+  document.querySelectorAll('input.fill-in').forEach(el => {
+    el.addEventListener('input', () => saveInput(el));
+  });
+});
+</script>
+</body>
+</html>
