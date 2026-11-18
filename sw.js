@@ -1,7 +1,7 @@
 // My Brave Book — service worker
 // The page itself is fetched fresh whenever there's internet, so uploading a new
 // index.html to GitHub updates the app automatically. Offline, the saved copy is used.
-const CACHE = 'brave-book-v4.0';
+const CACHE = 'brave-book-v4.1';
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

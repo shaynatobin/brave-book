@@ -19,7 +19,8 @@
 /* ───────── Tokens ───────── */
 :root{
   --p1:#FF6EB4;--p2:#9D5CFF;--p3:#4FA9FF;--p4:#3DCF97;--p5:#FFCF4D;--p6:#FF9C52;
-  --bg:#FFF8F1;--surface:#FFFFFF;--surface-2:#F7F1FF;--ink:#30234A;--ink-2:#66587F;--ink-3:#A196B4;--line:#EDE5F7;
+  --bg:#FFF8F1;--surface:#FFFFFF;--surface-2:#F7F1FF;--ink:#30234A;--ink-2:#5F5278;--ink-3:#857A9C;--line:#EDE5F7;
+  --btn1:color-mix(in srgb,var(--p1) 64%,#3a0030);--btn2:color-mix(in srgb,var(--p2) 78%,#1a0040);
   --accent:color-mix(in srgb,var(--p2) 85%,#000);
   --r-sm:12px;--r-md:18px;--r-lg:26px;
   --sh-1:0 1px 2px rgba(48,35,74,.05),0 6px 18px rgba(48,35,74,.06);
@@ -58,7 +59,7 @@ h1,h2,h3{font-family:var(--display);line-height:1.15;letter-spacing:-.01em}
 .topbar .hello{flex:1;min-width:0}
 .topbar .hello b{display:block;font-family:var(--display);font-weight:800;font-size:1.2rem;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar .hello small{color:var(--ink-2);font-size:.8rem;font-weight:700}
-.pill{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:999px;background:var(--surface);box-shadow:var(--sh-1);font:800 .9rem var(--body);border:0}
+.pill{flex:none;display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:999px;background:var(--surface);box-shadow:var(--sh-1);font:800 .9rem var(--body);border:0}
 .icon-btn{width:44px;height:44px;border-radius:14px;border:0;background:var(--surface);box-shadow:var(--sh-1);display:grid;place-items:center;font-size:1.2rem}
 .saved{position:absolute;right:16px;top:calc(var(--safe-t) + 58px);font:800 .72rem var(--body);color:var(--ink-3);opacity:0;transition:opacity .3s}
 .saved.show{opacity:1}
@@ -68,13 +69,13 @@ main{max-width:980px;margin:0 auto;padding:6px 16px calc(var(--tab-h) + var(--sa
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;padding:6px 6px calc(6px + var(--safe-b));
   background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--line)}
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px;border:0;background:none;min-height:58px;border-radius:16px;
-  font:800 .66rem var(--body);color:var(--ink-3);position:relative;transition:color .2s}
+  font:800 .72rem var(--body);color:var(--ink-2);position:relative;transition:color .2s}
 .tab .ti{font-size:1.45rem;line-height:1;transition:transform .25s cubic-bezier(.3,1.6,.5,1);filter:saturate(.6);opacity:.8}
 .tab.on{color:var(--ink)}
 .tab.on .ti{transform:translateY(-3px) scale(1.15);filter:none;opacity:1}
 .tab.on::after{content:'';position:absolute;bottom:2px;width:18px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--p1),var(--p2))}
 .tab.center .ti{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;margin-top:-22px;font-size:1.6rem;opacity:1;filter:none;
-  background:linear-gradient(140deg,var(--p1),var(--p2));box-shadow:0 8px 20px color-mix(in srgb,var(--p2) 40%,transparent);border:4px solid var(--bg)}
+  background:linear-gradient(140deg,var(--btn1),var(--btn2));box-shadow:0 8px 20px color-mix(in srgb,var(--p2) 40%,transparent);border:4px solid var(--bg)}
 .tab.center.on .ti{transform:translateY(-3px) scale(1.06)}
 .tab.center.on::after{display:none}
 .tab .badge{position:absolute;top:6px;right:calc(50% - 22px);width:10px;height:10px;border-radius:50%;background:var(--lv5);border:2px solid var(--surface)}
@@ -112,10 +113,10 @@ main{max-width:980px;margin:0 auto;padding:6px 16px calc(var(--tab-h) + var(--sa
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:999px;border:0;
   font:800 1.02rem var(--display);transition:transform .12s ease,box-shadow .2s,background .2s;white-space:nowrap}
 .btn:active{transform:scale(.96)}
-.btn-primary{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;box-shadow:0 8px 18px color-mix(in srgb,var(--p2) 32%,transparent)}
+.btn-primary{background:linear-gradient(135deg,var(--btn1),var(--btn2));color:#fff;box-shadow:0 8px 18px color-mix(in srgb,var(--p2) 32%,transparent)}
 .btn-soft{background:var(--surface-2);color:var(--ink)}
 .btn-ghost{background:transparent;color:var(--ink-2);min-height:44px;padding:0 12px}
-.btn-good{background:linear-gradient(135deg,var(--p4),var(--p3));color:#fff}
+.btn-good{background:linear-gradient(135deg,color-mix(in srgb,var(--p4) 62%,#00302a),color-mix(in srgb,var(--p3) 66%,#002040));color:#fff}
 .btn-danger{background:color-mix(in srgb,var(--lv5) 14%,var(--surface));color:var(--lv5)}
 .btn-block{width:100%}
 .btn-sm{min-height:40px;padding:0 16px;font-size:.92rem}
@@ -140,7 +141,7 @@ textarea.inp{min-height:88px;resize:vertical;line-height:1.45}
 .chip.on .ck{background:var(--p2);color:#fff;border-color:var(--p2)}
 .chip .ck{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink-3);display:grid;place-items:center;font-size:.7rem;flex:none}
 .chip .x{margin-left:2px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-size:.8rem;color:var(--ink-3)}
-.chip.sel{background:linear-gradient(135deg,var(--p1),var(--p2));color:#fff;border-color:transparent}
+.chip.sel{background:linear-gradient(135deg,var(--btn1),var(--btn2));color:#fff;border-color:transparent}
 
 /* ───────── Hero / critter ───────── */
 .hero{display:flex;align-items:center;gap:14px;padding:18px;border-radius:30px;margin-bottom:14px;position:relative;overflow:hidden;
@@ -178,7 +179,7 @@ textarea.inp{min-height:88px;resize:vertical;line-height:1.45}
 .meter-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
 .mbtn{border:2px solid var(--line);background:var(--surface);border-radius:18px;padding:10px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:1px;transition:all .2s}
 .mbtn .me{font-size:2rem;line-height:1.1}
-.mbtn .mn{font:800 1rem var(--display);color:var(--lv)}
+.mbtn .mn{font:800 1rem var(--display);color:color-mix(in srgb,var(--lv) 62%,var(--ink))}
 .mbtn .ml{font:800 .66rem var(--body);color:var(--ink-2)}
 .mbtn.on{border-color:var(--lv);background:color-mix(in srgb,var(--lv) 16%,var(--surface));transform:translateY(-4px);box-shadow:0 8px 18px color-mix(in srgb,var(--lv) 30%,transparent)}
 .mbtn:active{transform:scale(.94)}
@@ -316,7 +317,8 @@ textarea.inp{min-height:88px;resize:vertical;line-height:1.45}
 .finder .fr .fe{font-size:1.5rem}
 .finder .fr .fl{flex:1;font:800 .95rem var(--body)}
 .finder .dots{display:flex;gap:6px}
-.finder .dots button{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink-3);background:var(--surface)}
+.finder .fr{flex-wrap:wrap}.finder .fl{flex:1 1 55%}
+.finder .dots button{width:42px;height:42px;border-radius:50%;border:2px solid var(--ink-3);background:var(--surface)}
 .finder .dots button.on{background:var(--p4);border-color:var(--p4)}
 
 /* ───────── Parent area ───────── */
@@ -359,6 +361,22 @@ textarea.inp{min-height:88px;resize:vertical;line-height:1.45}
 .sheet h3{font-size:1.05rem;font-weight:800;margin:22px 0 8px}
 @media (max-width:559px){.hero .ring{display:none}.hero{padding:16px}.critter.md{width:84px;height:84px;font-size:3rem}}
 
+/* ───────── Calm corner ───────── */
+.pill.calm{background:linear-gradient(135deg,color-mix(in srgb,var(--p3) 22%,var(--surface)),color-mix(in srgb,var(--p4) 22%,var(--surface)))}
+.calm-main,.calm-grown{display:flex;align-items:center;gap:16px;width:100%;padding:18px;border-radius:24px;border:0;text-align:left}
+.calm-main{background:linear-gradient(135deg,var(--btn1),var(--btn2));color:#fff;box-shadow:0 10px 24px color-mix(in srgb,var(--p2) 35%,transparent)}
+.calm-grown{background:color-mix(in srgb,var(--p5) 28%,var(--surface));border:2px solid color-mix(in srgb,var(--p5) 60%,transparent)}
+.calm-main .te,.calm-grown .te{font-size:2.6rem;line-height:1}
+.calm-main b,.calm-grown b{display:block;font:800 1.3rem var(--display)}
+.calm-main small,.calm-grown small{font-weight:700;opacity:.9}
+.callgrown{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:30px 16px;border-radius:30px;background:linear-gradient(150deg,color-mix(in srgb,var(--p5) 45%,var(--surface)),color-mix(in srgb,var(--p1) 25%,var(--surface)))}
+.callgrown b{font:800 2rem/1.1 var(--display)}.callgrown span{font:800 1.15rem var(--body);color:var(--ink-2)}
+.bellycheck{margin-top:22px;padding:14px;border-radius:20px;background:var(--surface-2)}
+.bellycheck .mbtn{background:var(--surface)}
+.callout.help{border-width:2px}
+@media (max-width:400px){.calm-l{display:none}}
+.sheet-open .toast{top:calc(var(--safe-t) + 14px);bottom:auto}
+
 /* ───────── Toast & confetti ───────── */
 .toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + var(--safe-b) + 18px);z-index:70;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   max-width:min(92vw,460px);padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font:800 .95rem var(--body);box-shadow:var(--sh-2);transition:all .3s;text-align:center}
@@ -366,7 +384,7 @@ textarea.inp{min-height:88px;resize:vertical;line-height:1.45}
 #confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:80;display:none}
 .pop{animation:pop .45s cubic-bezier(.3,1.7,.5,1)}
 @keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){*:not(.ball):not(#tring){animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -380,7 +398,7 @@ textarea.inp{min-height:88px;resize:vertical;line-height:1.45}
 /* ════════════════════════════════════════════════════════════
    My Brave Book — v4
    ════════════════════════════════════════════════════════════ */
-const VERSION = '4.0';
+const VERSION = '4.1';
 const KEY = 'braveBook_v4';
 
 /* ───────── helpers ───────── */
@@ -577,7 +595,7 @@ const STICKERS = [
   { id: 'mm5', e: '✨', n: '5 Mischief Managed', t: () => S.mischief.length >= 5 },
   { id: 'ch1', e: '⭐', n: 'First challenge', t: () => Object.values(S.challenges).some(Boolean) },
   { id: 'lvl1', e: '🌟', n: 'All of Level 1', t: () => CHALLENGES.filter(c => c.lv === 1).every(c => S.challenges[c.id]) },
-  { id: 'plan1', e: '🗺️', n: 'Made a plan', t: () => S.plans.length >= 1 },
+  { id: 'plan1', e: '🗺️', n: 'Made a plan', t: () => S.plans.some(p => p.title) },
   { id: 'tool', e: '🎒', n: 'A tool helped!', t: () => S.toolUses.some(u => u.after < u.before) },
   { id: 'breath5', e: '🌬️', n: '5 breathing rounds', t: () => S.breaths >= 5 },
   { id: 'talk5', e: '💬', n: '5 talk times', t: () => Object.values(S.days).filter(d => d.talk).length >= 5 },
@@ -740,6 +758,9 @@ function tpl(str) {
     .replace(/\{worry\}/g, WN()).replace(/\{move\}/g, AO().move).replace(/\{how\}/g, AO().how).replace(/\{name\}/g, KID());
 }
 const day = (k = dkey()) => S.days[k] || (S.days[k] = {});
+const peakOf = d => d ? (d.peak || Math.max(0, ...(d.log || []).map(l => +l.v || 0)) || d.meter || 0) : 0;
+const firstOf = d => d ? (d.first || (d.log && d.log[0] && d.log[0].v) || d.meter || 0) : 0;
+const rangeText = d => { const f = firstOf(d), p = peakOf(d), l = d && d.meter; if (!l) return '—'; const pts = [f, p, l].filter((v, i, a) => i === 0 || v !== a[i - 1]); return pts.join(' → '); };
 const isActive = d => !!(d && (d.meter || d.actDone || d.brave || d.answer || d.talk));
 const isFull = d => !!(d && d.meter && d.actDone && d.talk);
 const activeDays = () => Object.values(S.days).filter(isActive).length;
@@ -857,6 +878,7 @@ function topbar() {
   return `<header class="topbar">
     <button class="icon-btn" style="padding:0;background:none;box-shadow:none" data-act="tab" data-tab="critter" aria-label="My ${esc(AN())}">${critterHTML('sm')}</button>
     <div class="hello"><b>Hi, ${esc(KID())}!</b><small>${sub}</small></div>
+    <button class="pill calm" data-act="sheet" data-s="calm" aria-label="Calm corner">🫶<span class="calm-l">Calm</span></button>
     <button class="pill" data-act="sheet" data-s="streak" aria-label="Streak">${st ? '🔥' : '🌱'} ${st}</button>
     <button class="icon-btn" data-act="sheet" data-s="grownups" aria-label="Grown-ups">⚙️</button>
     <span class="saved" id="savedFlag">Saved ✓</span>
@@ -898,6 +920,11 @@ function suggestedTools() {
   ['breathe', 'gallop', 'comfort'].forEach(t => !ids.includes(t) && ids.push(t));
   return ids.slice(0, 3).map(toolById).filter(Boolean);
 }
+function helpBlock(v) {
+  const grown = v >= 4 ? `<div class="callout help mt12"><b class="t">🤝 Find your grown-up</b>Big feelings are easier with a buddy. Show them your number${S.tools.signal ? ' — or use your secret signal: <b>' + esc(S.tools.signal) + '</b>' : ''}.
+    <div class="mt12"><button class="btn btn-primary btn-sm" data-act="sheet" data-s="calm">🫶 Open my Calm corner</button></div></div>` : '';
+  return `${grown}<h3>${v >= 4 ? 'Then try a tool' : 'Try one of your tools'}</h3><div class="tiles">${suggestedTools().map(t => `<button class="tile" data-act="tool" data-id="${t.id}"><span class="te">${tpl(t.e)}</span><b>${tpl(t.n)}</b><small>${tpl(t.d)}</small></button>`).join('')}</div>`;
+}
 function vToday() {
   const d = day(), act = todayAct(), talk = todayTalk();
   const s1 = !!d.meter, s2 = !!d.actDone, s3 = !!d.talk, n = s1 + s2 + s3;
@@ -915,8 +942,7 @@ function vToday() {
       <p>Tap the face that matches right now.</p>
       ${meterRow(d.meter, 'checkin')}
       ${d.meter ? `<div class="timeline">${(d.log || []).filter(l => l.t).slice(-4).map((l, i, a) => `${i ? '<span class="arrow">→</span>' : ''}<span class="tl" style="--lv:${LV[l.v].c}"><i>${LV[l.v].emoji}</i>${l.t}</span>`).join('')}</div>` : ''}
-      ${d.meter >= 3 ? `<h3>Try one of your tools</h3><div class="tiles">${suggestedTools().map(t => `<button class="tile" data-act="tool" data-id="${t.id}" data-from="today"><span class="te">${tpl(t.e)}</span><b>${tpl(t.n)}</b><small>${tpl(t.d)}</small></button>`).join('')}</div>
-        ${d.meter >= 4 ? `<div class="callout mt12"><b class="t">🤝 Find your grown-up</b>Big feelings are easier with a buddy. Show them your number — or use your secret signal.</div>` : ''}` : ''}
+      ${d.meter >= 3 ? helpBlock(d.meter) : ''}
     </section>
     <section class="card" id="c-act">
       <div class="eyebrow">Step 2 · ${esc(tpl(act.cat))}</div>
@@ -956,13 +982,13 @@ function calendarHTML() {
   for (let i = 0; i < first; i++) cells += '<span class="cd blank"></span>';
   for (let n = 1; n <= dim; n++) {
     const k = dkey(new Date(calY, calM, n)), d = S.days[k], fut = new Date(calY, calM, n) > now, today = k === dkey();
-    const has = isActive(d), lv = d && d.meter ? LV[d.meter].c : null;
+    const has = isActive(d), pk = peakOf(d), lv = pk ? LV[pk].c : null;
     cells += `<button class="cd ${has ? 'has' : ''} ${isFull(d) ? 'full' : ''} ${today ? 'today' : ''} ${fut ? 'future' : ''}" ${lv ? `style="--lv:${lv}"` : ''} ${has ? `data-act="dayview" data-k="${k}"` : 'disabled'} aria-label="${k}">${n}</button>`;
   }
   return `<div class="eyebrow">📅 My journey</div><h2>${activeDays()} brave days so far</h2>
     <div class="cal-head"><button class="icon-btn" data-act="cal" data-d="-1" aria-label="Previous month">‹</button><b>${MON_L[calM]} ${calY}</b><button class="icon-btn" data-act="cal" data-d="1" ${isCur ? 'disabled style="opacity:.3"' : ''} aria-label="Next month">›</button></div>
     <div class="cal">${DOW.map(d => `<span class="dow">${d[0]}</span>`).join('')}${cells}</div>
-    <div class="legend">${[1, 2, 3, 4, 5].map(n => `<span><i class="lvl-dot" style="--lv:${LV[n].c}"></i>${LV[n].name}</span>`).join('')}<span>⭕ gold ring = all 3 steps</span></div>`;
+    <div class="legend">${[1, 2, 3, 4, 5].map(n => `<span><i class="lvl-dot" style="--lv:${LV[n].c}"></i>${LV[n].name}</span>`).join('')}<span>⭕ gold ring = all 3 steps</span></div><p class="faint small mt8">Each day shows its biggest belly number.</p>`;
 }
 function nextPlan() {
   return S.plans.filter(p => { const d = planDue(p); return d !== null && d >= 0 && d <= 3; }).sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -1035,6 +1061,7 @@ function vBelly() {
     <div class="eyebrow">Check in</div><h2>How does your belly feel?</h2>
     <div class="vmeter">${[1, 2, 3, 4, 5].map(n => { const L = LV[n];
       return `<button class="vlv ${d.meter == n ? 'on' : ''}" style="--lv:${L.c}" data-act="checkin" data-v="${n}"><span class="num">${n}</span><span class="em">${L.emoji}</span><span class="tx"><b>${L.name}</b><small>${L.desc}</small></span></button>`; }).join('')}</div>
+    ${d.meter >= 3 ? helpBlock(d.meter) : ''}
     ${log.length ? `<h3>Today</h3><div class="timeline">${log.map((l, i) => `${i ? '<span class="arrow">→</span>' : ''}<span class="tl" style="--lv:${LV[l.v].c}"><i>${LV[l.v].emoji}</i>${l.v} · ${l.t}</span>`).join('')}</div>` : ''}
   </section>
   <div class="stack">
@@ -1078,6 +1105,12 @@ function vTools() {
 }
 
 /* ───────── PLANS ───────── */
+function getPlan(id, create) {
+  let p = S.plans.find(x => x.id === id);
+  if (!p && SH && SH.draft && SH.draft.id === id) { p = SH.draft; if (create) { S.plans.push(p); SH.draft = null; } }
+  return p;
+}
+const planEmpty = p => !p.title && !p.date && !['howLong', 'who', 'first', 'next', 'last', 'bring', 'job', 'ifWorry', 'worst', 'weDo', 'actually'].some(k => p[k]) && !p.checks.some(Boolean);
 function newPlan() { return { id: uid(), title: '', date: '', howLong: '', who: '', first: '', next: '', last: '', bring: '', job: '', ifWorry: '', worst: '', weDo: '', actually: '', checks: PLAN_CHECKS.map(() => false), created: dkey(), after: null }; }
 function planCard(p) {
   const due = planDue(p), d = p.date ? fromKey(p.date) : null, ready = p.checks.filter(Boolean).length;
@@ -1141,11 +1174,13 @@ function vBrave() {
 
 /* ───────── SHEETS ───────── */
 let SH = null, breathT = null, timerT = null;
-function openSheet(type, data = {}) { SH = { type, ...data }; renderSheet(); $('#sheet').classList.add('open'); $('#scrim').classList.add('open'); $('#sheet').scrollTop = 0; document.body.style.overflow = 'hidden'; }
+function openSheet(type, data = {}) { stopTimers(); SH = { type, ...data }; document.body.classList.add('sheet-open'); renderSheet(); $('#sheet').classList.add('open'); $('#scrim').classList.add('open'); $('#sheet').scrollTop = 0; document.body.style.overflow = 'hidden'; }
 function closeSheet() {
   stopTimers(); if ('speechSynthesis' in window) speechSynthesis.cancel();
   $('#sheet').classList.remove('open'); $('#scrim').classList.remove('open'); document.body.style.overflow = '';
-  const wasGrown = SH && (SH.type === 'grownups'); SH = null;
+  const wasGrown = SH && (SH.type === 'grownups');
+  if (SH && SH.type === 'plan') { S.plans = S.plans.filter(p => !planEmpty(p)); save(); }
+  SH = null; document.body.classList.remove('sheet-open');
   if (wasGrown) applyLook();
   render();
 }
@@ -1154,7 +1189,7 @@ const sheetHead = (e, t, extra = '') => `<div class="grab"></div><div class="she
 function renderSheet() {
   if (!SH) return;
   const el = $('#sheet'), st = el.scrollTop;
-  el.innerHTML = ({ tool: shTool, dayview: shDay, plan: shPlan, followup: shFollowup, addMM: shAddMM, grownups: shGrownups, streak: shStreak, whatsnew: shWhatsNew, stk: shSticker })[SH.type]();
+  el.innerHTML = ({ calm: shCalm, tool: shTool, dayview: shDay, plan: shPlan, followup: shFollowup, addMM: shAddMM, grownups: shGrownups, streak: shStreak, whatsnew: shWhatsNew, stk: shSticker })[SH.type]();
   el.scrollTop = st;
 }
 
@@ -1186,7 +1221,7 @@ function shTool() {
   } else if (t.kind === 'script') {
     body = `<div class="script">${critterScript().map(l => `<div>${esc(l)}</div>`).join('')}</div><div class="mt12">${speakBtn(critterScript().join(' '))}</div>`;
   } else if (t.kind === 'win') {
-    const wins = [...S.mischief.map(m => `${m.said ? 'Worry said ' + m.said + '… ' : ''}but really it was ${m.actually}`), ...S.hof.map(h => `I ${h.text.replace(/^I /, '')}`)].filter(Boolean);
+    const wins = [...S.mischief.map(m => `${m.said ? 'Worry said ' + m.said + '… ' : ''}but really it was ${m.actually}`), ...S.hof.map(h => /^[a-z]/.test(h.text) ? `I ${h.text}` : h.text)].filter(Boolean);
     SH.win = SH.win ?? (wins.length ? Math.floor(Math.random() * wins.length) : -1);
     body = wins.length ? `<div class="callout"><b class="t">🏆 Remember when…</b>${esc(wins[SH.win % wins.length])}</div><p class="mt12">You were brave then. You can be brave now!</p><button class="btn btn-soft mt12" data-act="winNext">🔀 Another one</button>`
       : `<p>Your wins will show up here once you add them to your Hall of Fame or Mischief Managed wall!</p>`;
@@ -1204,10 +1239,12 @@ function shTool() {
   }
   const showMeters = t.kind !== 'signal';
   return `${sheetHead(tpl(t.e), esc(tpl(t.n)), `<button class="icon-btn" data-act="fav" data-id="${t.id}" aria-label="Favorite" style="opacity:${fav ? 1 : .4}">⭐</button>`)}
-    ${showMeters ? `<div class="eyebrow">Before: how’s your belly?</div>${meterRow(SH.before, 'tmeter', true, 'data-w="before"')}<div class="mt20"></div>` : ''}
     ${body}
-    ${showMeters ? `<div class="mt20"><div class="eyebrow">After: how’s your belly now?</div>${meterRow(SH.after, 'tmeter', true, 'data-w="after"')}</div>
-    ${SH.result ? `<div class="callout mt12 pop"><b class="t">${SH.result}</b></div>` : ''}` : ''}`;
+    ${showMeters ? `<div class="bellycheck">
+      <div class="eyebrow">🌡️ Belly check <span class="faint" style="text-transform:none;letter-spacing:0;font-weight:700">— optional</span></div>
+      <div class="small muted">Before${SH.auto && SH.before ? ' (from your check-in)' : ''}</div>${meterRow(SH.before, 'tmeter', true, 'data-w="before"')}
+      <div class="small muted mt12">After — how’s your belly now?</div>${meterRow(SH.after, 'tmeter', true, 'data-w="after"')}
+      ${SH.result ? `<div class="callout mt12 pop"><b class="t">${SH.result}</b></div>` : ''}</div>` : ''}`;
 }
 function runBreath() {
   const B = BREATHS[SH.pattern || 'rainbow']; let round = 0, i = 0;
@@ -1226,17 +1263,36 @@ function runBreath() {
 }
 function logMeter(v, src) {
   const d = day(); const first = !d.meter;
+  if (!d.first) d.first = (d.log && d.log[0] && +d.log[0].v) || v;
+  d.peak = Math.max(peakOf(d), v);
   d.meter = v; (d.log = d.log || []).push({ v, t: hhmm(), src });
   save(); checkStickers();
   return first;
 }
 
 /* day sheet */
+function shCalm() {
+  const tools = suggestedTools();
+  const main = tools[0];
+  if (SH.call) return `${sheetHead('💛', 'I need my grown-up')}
+    <div class="callgrown pop"><div style="font-size:4rem">💛</div><b>I need my grown-up</b><span>Please come be with me.</span></div>
+    <p class="muted mt12" style="text-align:center">Hold this up or bring it to your grown-up. You don’t have to say anything.</p>
+    <div class="row mt16" style="justify-content:center"><button class="btn btn-soft" data-act="calmBack">← Back to my Calm corner</button></div>`;
+  return `${sheetHead('🫶', 'My Calm corner')}
+    <p class="muted">Big feelings are okay. Let’s take care of your Worry ${esc(AN())} together.</p>
+    <button class="calm-main mt12" data-act="tool" data-id="${main.id}"><span class="te">${tpl(main.e)}</span><span><b>${esc(tpl(main.n))}</b><small>Tap to start</small></span></button>
+    <button class="calm-grown mt12" data-act="callGrown"><span class="te">🤝</span><span><b>Get my grown-up</b><small>${S.tools.signal ? 'or use our secret signal: ' + esc(S.tools.signal) : 'They’ll come help'}</small></span></button>
+    <h3>Other tools</h3>
+    <div class="tiles">${tools.slice(1).map(t => `<button class="tile" data-act="tool" data-id="${t.id}"><span class="te">${tpl(t.e)}</span><b>${esc(tpl(t.n))}</b></button>`).join('')}</div>
+    <h3>When you’re ready</h3><p class="small muted">How’s your belly? (You can skip this.)</p>
+    ${meterRow((S.days[dkey()] || {}).meter, 'calmMeter', true)}`;
+}
 function shDay() {
   const k = SH.k, d = S.days[k] || {}, act = d.actId && ACT_BY[d.actId], talk = d.talkId && TALK_BY[d.talkId];
-  return `${sheetHead(d.meter ? LV[d.meter].emoji : '📅', niceDate(k))}
+  return `${sheetHead(peakOf(d) ? LV[peakOf(d)].emoji : '📅', niceDate(k))}
     ${isFull(d) ? '<div class="callout"><b class="t">🎯 All 3 steps done!</b></div>' : ''}
     <div class="kv"><span>Belly Meter</span><b>${(d.log || []).length > 1 ? d.log.map(l => l.v).join(' → ') : d.meter ? `${d.meter} · ${LV[d.meter].name}` : '—'}</b></div>
+    ${peakOf(d) ? `<div class="kv"><span>Biggest number</span><b>${peakOf(d)} · ${LV[peakOf(d)].name}</b></div>` : ''}
     ${act || d.answer ? `<div class="kv" style="display:block"><span>Adventure${act ? ': ' + esc(tpl(act.title)) : ''}</span><p class="mt8"><b>${esc(d.answer || (d.actDone ? '✓ Done' : '—'))}</b></p></div>` : ''}
     <div class="kv"><span>Talk time</span><b>${d.talk ? '✓ ' + (talk ? esc(tpl(talk.t)) : 'Done') : '—'}</b></div>
     ${d.brave ? `<div class="kv" style="display:block"><span>Brave thing</span><p class="mt8"><b>${esc(d.brave)}</b></p></div>` : ''}`;
@@ -1244,7 +1300,7 @@ function shDay() {
 
 /* plan editor */
 function shPlan() {
-  const p = S.plans.find(x => x.id === SH.id); if (!p) return '';
+  const p = getPlan(SH.id); if (!p) return '';
   const f = (key, label, ph, type = 'text') => `<label class="field"><span>${label}</span><input class="inp" type="${type}" data-bind="plan:${p.id}.${key}" value="${esc(p[key])}" placeholder="${esc(ph)}"></label>`;
   const ifChips = suggestedTools().map(t => tpl(t.n)).concat(['Give our secret signal']);
   return `${sheetHead('🗺️', p.title ? esc(p.title) : 'New plan')}
@@ -1316,16 +1372,18 @@ function shGrownups() {
   if (t === 'progress') {
     const days30 = Array.from({ length: 30 }, (_, i) => dkey(addDays(new Date(), i - 29)));
     const withMeter = days30.map(k => S.days[k]).filter(d => d && d.meter);
-    const avg = withMeter.length ? (withMeter.reduce((a, d) => a + d.meter, 0) / withMeter.length).toFixed(1) : '—';
+    const big = withMeter.filter(d => peakOf(d) >= 4).length;
+    const avg = withMeter.length ? (withMeter.reduce((a, d) => a + peakOf(d), 0) / withMeter.length).toFixed(1) : '—';
     const uses = {}; S.toolUses.forEach(u => { const x = uses[u.tool] || (uses[u.tool] = { n: 0, drop: 0 }); x.n++; x.drop += u.before - u.after; });
     const toolRows = Object.entries(uses).sort((a, b) => b[1].drop / b[1].n - a[1].drop / a[1].n).slice(0, 5);
     const trig = [...S.critter.on.triggers.map(id => clueLabel('triggers', id)), ...S.critter.custom.triggers.filter(x => x.on).map(x => x.text)];
     const recent = Object.keys(S.days).sort().reverse().slice(0, 10).map(k => [k, S.days[k]]).filter(([, d]) => d.answer || d.brave).slice(0, 6);
-    body = `<div class="stats"><div class="stat"><b>${streak()}</b><small>Streak</small></div><div class="stat"><b>${sessions()}</b><small>Full sessions</small></div><div class="stat"><b>${avg}</b><small>Avg belly (30d)</small></div></div>
+    body = `<div class="stats"><div class="stat"><b>${streak()}</b><small>Streak</small></div><div class="stat"><b>${big}</b><small>Days at 4+ (30d)</small></div><div class="stat"><b>${avg}</b><small>Avg biggest # (30d)</small></div></div>
       <h3>Belly Meter · last 30 days</h3>
-      <div class="strip">${days30.map(k => { const d = S.days[k]; return `<i class="${d && d.meter ? '' : 'none'}" style="${d && d.meter ? `--lv:${LV[d.meter].c}` : ''}" title="${shortDate(k)}${d && d.meter ? ': ' + d.meter : ''}"></i>`; }).join('')}</div>
+      <div class="strip">${days30.map(k => { const d = S.days[k], pk = peakOf(d); return `<i class="${pk ? '' : 'none'}" style="${pk ? `--lv:${LV[pk].c}` : ''}" title="${shortDate(k)}${pk ? ': ' + rangeText(d) : ''}"></i>`; }).join('')}</div>
       <div class="legend">${[1, 2, 3, 4, 5].map(n => `<span><i class="lvl-dot" style="--lv:${LV[n].c}"></i>${n}</span>`).join('')}<span><i class="lvl-dot" style="--lv:var(--surface-2)"></i>no check-in</span></div>
-      <p class="faint small mt8">Oldest on the left, today on the bottom right. Look for fewer orange/red days over time — and shorter stretches of them.</p>
+      <p class="faint small mt8">Each square is that day’s <b>biggest</b> number (oldest top-left, today bottom-right). Look for fewer orange/red days over time.</p>
+      ${(() => { const hard = days30.filter(k => peakOf(S.days[k]) >= 4).slice(-5).reverse(); return hard.length ? `<h3>Recent big-feeling days</h3>${hard.map(k => `<div class="kv"><span>${shortDate(k)}</span><b>${rangeText(S.days[k])}</b></div>`).join('')}<p class="faint small">Shown as first → biggest → last number that day.</p>` : ''; })()}
       <h3>Tools that helped most</h3>
       ${toolRows.length ? toolRows.map(([id, x]) => { const tl = toolById(id); return `<div class="kv"><span>${tl ? tpl(tl.e) + ' ' + esc(tpl(tl.n)) : id}</span><b>${x.n}× · ${(x.drop / x.n) > 0 ? '↓' + (x.drop / x.n).toFixed(1) : 'no change'}</b></div>`; }).join('') : '<p class="faint small">When she checks her belly before and after a tool, the results show up here.</p>'}
       <h3>Her worry triggers</h3>
@@ -1409,6 +1467,7 @@ function checkStickers(quiet) {
   if (!got.length) return;
   got.forEach(s => { S.stickers[s.id] = dkey(); S.newStickers.push(s.id); });
   save();
+  if (((S.days[dkey()] || {}).meter || 0) >= 3) quiet = true; // no parties during big feelings — the NEW badge waits on the Brave tab
   if (!quiet) setTimeout(() => { toast(`🎖️ New sticker: ${tpl(got[0].e)} ${tpl(got[0].n)}${got.length > 1 ? ` (+${got.length - 1} more)` : ''}`, 3200); celebrate(); }, 500);
 }
 
@@ -1416,7 +1475,7 @@ function checkStickers(quiet) {
 function resolve(path) {
   const parts = path.split('.'); let o, i = 0;
   if (parts[0] === 'day') { o = day(); i = 1; }
-  else if (parts[0].startsWith('plan:')) { o = S.plans.find(p => p.id === parts[0].slice(5)); i = 1; }
+  else if (parts[0].startsWith('plan:')) { o = getPlan(parts[0].slice(5), true); i = 1; }
   else o = S;
   for (; i < parts.length - 1; i++) { const k = parts[i]; o = o[k] ?? (o[k] = /^\d+$/.test(parts[i + 1]) ? [] : {}); }
   return [o, parts[parts.length - 1]];
@@ -1425,6 +1484,7 @@ document.addEventListener('input', e => {
   const el = e.target.closest('[data-bind]'); if (!el) return;
   const [o, k] = resolve(el.dataset.bind); if (!o) return;
   o[k] = el.value; save(); flashSaved();
+  if (/^plan:.*\.title$/.test(el.dataset.bind) && el.value.trim()) checkStickers();
   if (el.dataset.bind === 'day.brave') { const b = $('[data-act=braveToHof]'); if (b && !day().braveHof) b.disabled = !el.value.trim(); }
   if (el.dataset.bind.startsWith('cfg.')) applyLook();
 });
@@ -1450,11 +1510,15 @@ const ACT = {
   speak: el => speak(el.dataset.t),
   sheet: el => openSheet(el.dataset.s),
   closeSheet: () => closeSheet(),
+  callGrown: () => { SH.call = true; renderSheet(); [523, 659, 523, 659].forEach((f, i) => setTimeout(() => chime(f, .5, .2), i * 420)); },
+  calmBack: () => { SH.call = false; renderSheet(); },
+  calmMeter: el => { const v = +el.dataset.v; logMeter(v, 'calm'); if (v <= 2) ding(); renderSheet(); toast(v <= 2 ? '🌈 So glad you’re feeling calmer' : '💛 Thanks for telling me'); },
   checkin: el => {
     const v = +el.dataset.v, first = logMeter(v, 'checkin');
-    if (first) celebrate(false); else ding();
+    if (v <= 2) { first ? celebrate(false) : ding(); } else chime(523, .5, .07);
     rerender();
-    if (v >= 3 && tab === 'today') setTimeout(() => $('#c-check .tiles')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+    const host = tab === 'today' ? '#c-check' : '.vmeter';
+    if (v >= 3) setTimeout(() => $(`${tab === 'today' ? '#c-check' : '#main'} ${v >= 4 ? '.help' : '.tiles'}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80);
     else if (first && tab === 'today') setTimeout(() => $('#c-act')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
   },
   actDone: () => { const d = day(); d.actDone = !d.actDone; save(); afterStep(d.actDone, '#c-talk'); },
@@ -1470,10 +1534,10 @@ const ACT = {
   cclue: (el, e) => { if (e.target.closest('[data-act=delclue]')) return; const x = S.critter.custom[el.dataset.g].find(c => c.id === el.dataset.id); if (x) { x.on = !x.on; save(); el.classList.toggle('on'); } },
   delclue: el => { const g = el.dataset.g; S.critter.custom[g] = S.critter.custom[g].filter(c => c.id !== el.dataset.id); save(); rerender(); },
   // tools
-  tool: el => { const t = toolById(el.dataset.id); if (!t) return; openSheet('tool', { id: t.id, pattern: el.dataset.pattern || 'rainbow', before: el.dataset.from === 'today' ? day().meter : null }); },
+  tool: el => { const t = toolById(el.dataset.id); if (!t) return; const cur = (S.days[dkey()] || {}).meter || null; openSheet('tool', { id: t.id, pattern: el.dataset.pattern || 'rainbow', before: cur, auto: !!cur }); },
   fav: (el, e) => { e.stopPropagation(); const a = S.tools.favs, id = el.dataset.id, i = a.indexOf(id); i < 0 ? a.push(id) : a.splice(i, 1); save(); SH ? renderSheet() : rerender(); },
   tmeter: el => {
-    const v = +el.dataset.v; SH[el.dataset.w] = v;
+    const v = +el.dataset.v; SH[el.dataset.w] = v; if (el.dataset.w === 'before') SH.auto = false;
     if (el.dataset.w === 'after') {
       logMeter(v, 'tool:' + SH.id);
       if (SH.before) { S.toolUses.push({ tool: SH.id, before: SH.before, after: v, date: dkey() }); save(); }
@@ -1502,10 +1566,10 @@ const ACT = {
   countUp: () => { const t = toolById(SH.id); SH.count = (SH.count || 0) + 1; chime(500 + SH.count * 40, .15, .1); if (SH.count >= t.count) { SH.count = t.count; S.moves = (S.moves || 0) + 1; save(); checkStickers(); celebrate(false); } renderSheet(); },
   countReset: () => { SH.count = 0; renderSheet(); },
   // plans
-  addPlan: () => { const p = newPlan(); S.plans.push(p); save(); checkStickers(); openSheet('plan', { id: p.id }); },
+  addPlan: () => { const p = newPlan(); openSheet('plan', { id: p.id, draft: p }); },
   editPlan: el => openSheet('plan', { id: el.dataset.id }),
-  planCheck: el => { const p = S.plans.find(x => x.id === el.dataset.id); const i = +el.dataset.i; p.checks[i] = !p.checks[i]; save(); if (p.checks.every(Boolean)) celebrate(false); renderSheet(); },
-  ifChip: el => { const p = S.plans.find(x => x.id === el.dataset.id); p.ifWorry = p.ifWorry ? p.ifWorry + ', ' + el.dataset.t : el.dataset.t; save(); renderSheet(); },
+  planCheck: el => { const p = getPlan(el.dataset.id, true); const i = +el.dataset.i; p.checks[i] = !p.checks[i]; save(); if (p.checks.every(Boolean)) celebrate(false); renderSheet(); },
+  ifChip: el => { const p = getPlan(el.dataset.id, true); p.ifWorry = p.ifWorry ? p.ifWorry + ', ' + el.dataset.t : el.dataset.t; save(); renderSheet(); },
   delPlan: el => { if (!SH.confirmDel) { SH.confirmDel = true; renderSheet(); return; } S.plans = S.plans.filter(p => p.id !== el.dataset.id); save(); closeSheet(); },
   followup: el => openSheet('followup', { id: el.dataset.id }),
   fuMeter: el => { SH.m = +el.dataset.v; renderSheet(); },
@@ -1541,7 +1605,7 @@ const ACT = {
   obNext: () => { if (obStep === 0 && !S.cfg.childName.trim()) { toast('Please add your child’s name'); $('[data-bind="cfg.childName"]')?.focus(); return; }
     if (obStep < 2) { obStep++; render(); scrollTo(0, 0); return; }
     S.setupDone = true;
-    if (S.cfg.winWhat && !S.mischief.length) { S.mischief.push({ id: uid(), said: `${S.cfg.winWhat} would be scary`, actually: S.cfg.winResult || 'better than I thought!', date: dkey(), first: true }); S.hof.push({ id: uid(), text: `${S.cfg.winWhat} — I was nervous, and it was ${S.cfg.winResult || 'great'}!`, date: dkey(), first: true }); }
+    if (S.cfg.winWhat && !S.mischief.length) { S.mischief.push({ id: uid(), said: `${S.cfg.winWhat} would be scary`, actually: S.cfg.winResult || 'better than I thought!', date: dkey(), first: true }); S.hof.push({ id: uid(), text: `was brave at ${S.cfg.winWhat} — and it was ${S.cfg.winResult || 'great'}!`, date: dkey(), first: true }); }
     save(); render(); },
   obBack: () => { obStep--; render(); },
   kidGo: () => { const n = $('#kidName').value.trim(); if (!n) { toast('Write your name first! ✏️'); return; } S.cfg.childName = n; S.childDone = true; save(); celebrate(); tab = 'today'; render(); },
